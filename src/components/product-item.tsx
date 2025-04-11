@@ -1,3 +1,30 @@
-export function ProductItem() {
-  return <h1>Product item</h1>;
+import Image from "next/image";
+import { Card, CardContent, CardFooter } from "./ui/card";
+
+interface ProductItemProps {
+  imageUrl: string;
+  name: string;
+  price: string;
+}
+
+export function ProductItem({ imageUrl, name, price }: ProductItemProps) {
+  return (
+    <Card className="max-w-sm hover:cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <CardContent className="flex justify-center">
+        <Image
+          alt="Product Image"
+          src={imageUrl}
+          width={300}
+          height={250}
+          className="rounded-md"
+        />
+      </CardContent>
+      <CardFooter>
+        <div className="flex flex-col gap-1">
+          <span>{name}</span>
+          <strong>{price}</strong>
+        </div>
+      </CardFooter>
+    </Card>
+  );
 }
