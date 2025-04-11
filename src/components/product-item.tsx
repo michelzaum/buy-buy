@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "./ui/card";
 
-interface ProductItemProps {
+export interface ProductItemProps {
+  id: number;
   imageUrl: string;
   name: string;
   price: string;
@@ -16,7 +17,7 @@ export function ProductItem({ imageUrl, name, price }: ProductItemProps) {
           src={imageUrl}
           width={300}
           height={250}
-          className="rounded-md"
+          className="rounded-md max-h-[400px]"
         />
       </CardContent>
       <CardFooter>

@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { ProductItem } from "@/components/product-item";
+import { ProductList } from "@/components/product-list";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +14,37 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+
+const mockProducts = [
+  {
+    id: 1,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1681302547899-9339f12aca53?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Notebook Macbook Pro 2024",
+    price: "R$ 18,500",
+  },
+  {
+    id: 2,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1681302547899-9339f12aca53?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Notebook Lenovo",
+    price: "R$ 3,500",
+  },
+  {
+    id: 3,
+    imageUrl:
+      "https://images.unsplash.com/photo-1634403665481-74948d815f03?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Iphone 15 Pro",
+    price: "R$ 6,999",
+  },
+  {
+    id: 4,
+    imageUrl:
+      "https://images.unsplash.com/photo-1634403665481-74948d815f03?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Iphone 15 Pro",
+    price: "R$ 6,999",
+  },
+];
 
 export default function Page() {
   return (
@@ -43,7 +74,9 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <ProductItem />
+          <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
+            <ProductList products={mockProducts} />
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
