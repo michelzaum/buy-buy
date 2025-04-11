@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { Card, CardContent, CardFooter } from "./ui/card";
 import { Product } from "@prisma/client";
+import { Card, CardContent, CardFooter } from "./ui/card";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export function ProductItem({ imageUrl, name, description, price }: Product) {
   return (
@@ -15,12 +16,12 @@ export function ProductItem({ imageUrl, name, description, price }: Product) {
         />
       </CardContent>
       <CardFooter>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             <span className="text-xl">{name}</span>
             <span>{description}</span>
           </div>
-          <strong>{price}</strong>
+          <strong>{formatCurrency(price)}</strong>
         </div>
       </CardFooter>
     </Card>
