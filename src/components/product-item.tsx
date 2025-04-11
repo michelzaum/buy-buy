@@ -1,14 +1,8 @@
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "./ui/card";
+import { Product } from "@prisma/client";
 
-export interface ProductItemProps {
-  id: number;
-  imageUrl: string;
-  name: string;
-  price: string;
-}
-
-export function ProductItem({ imageUrl, name, price }: ProductItemProps) {
+export function ProductItem({ imageUrl, name, price }: Product) {
   return (
     <Card className="max-w-sm hover:cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out">
       <CardContent className="flex justify-center">

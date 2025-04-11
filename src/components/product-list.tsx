@@ -1,7 +1,8 @@
-import { ProductItem, ProductItemProps } from "./product-item";
+import { Product } from "@prisma/client";
+import { ProductItem } from "./product-item";
 
 interface ProductListProps {
-  products: ProductItemProps[];
+  products: Product[];
 }
 
 export function ProductList({ products }: ProductListProps) {
@@ -22,6 +23,8 @@ export function ProductList({ products }: ProductListProps) {
           imageUrl={product.imageUrl}
           name={product.name}
           price={product.price}
+          categoryId={product.categoryId}
+          description={product.description}
         />
       ))}
     </div>
