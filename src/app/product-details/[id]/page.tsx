@@ -1,24 +1,55 @@
 import Image from "next/image";
 import { Plus, Minus } from "lucide-react";
+import { db } from "@/lib/db";
+import { formatCurrency } from "@/lib/formatCurrency";
 
-export default function ProductDetails() {
+interface ProductDetailsProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ProductDetails({ params }: ProductDetailsProps) {
+  const { id } = params;
+
+  const product = await db.product.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  if (!product) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <span>Produto não encontrado.</span>
+      </div>
+    );
+  }
+
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="flex gap-8">
         <Image
-          alt="Product Image"
-          src="https://images.unsplash.com/photo-1632794716789-42d9995fb5b6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt={product.name}
+          src={product.imageUrl}
           width={900}
           height={900}
-          className="rounded-lg"
+          className="rounded-lg max-h-[900px] bg-contain object-cover"
         />
         <div className="flex flex-col gap-4">
-          <strong className="text-4xl">Smartwatch</strong>
-          <span className="font-medium">
-            Acompanhe seus passos e batimentos cardíacos
-          </span>
+          <strong className="text-4xl">{product.name}</strong>
+          <span className="font-medium">{product.description}</span>
           <div className="flex flex-col gap-10 mt-16">
-            <strong className="text-3xl">R$ 349,00</strong>
+            <strong className="text-3xl">
+              {formatCurrency(product.price)}
+            </strong>
             <div className="flex flex-col gap-4">
               <div className="flex gap-8">
                 <div className="flex items-center gap-4 border border-gray-500 rounded-lg p-4">
