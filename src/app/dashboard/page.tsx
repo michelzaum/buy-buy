@@ -17,7 +17,15 @@ import {
 import { db } from "@/lib/db";
 
 export default async function Dashboard() {
-  const products = await db.product.findMany();
+  const products = await db.product.findMany({
+    include: {
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
 
   return (
     <SidebarProvider>

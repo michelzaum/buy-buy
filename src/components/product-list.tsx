@@ -1,8 +1,16 @@
-import { Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ProductItem } from "./product-item";
 
 interface ProductListProps {
-  products: Product[];
+  products: Prisma.ProductGetPayload<{
+    include: {
+      category: {
+        select: {
+          name: true;
+        };
+      };
+    };
+  }>[];
 }
 
 export function ProductList({ products }: ProductListProps) {
@@ -17,15 +25,7 @@ export function ProductList({ products }: ProductListProps) {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
       {products.map((product) => (
-        <ProductItem
-          id={product.id}
-          key={product.id}
-          imageUrl={product.imageUrl}
-          name={product.name}
-          price={product.price}
-          categoryId={product.categoryId}
-          description={product.description}
-        />
+        <ProductItem key={product.id} product={product} />
       ))}
     </div>
   );
