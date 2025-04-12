@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { db } from "@/lib/db";
 
-export default async function Page() {
+export default async function Dashboard() {
   const products = await db.product.findMany();
 
   return (
