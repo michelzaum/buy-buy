@@ -12,8 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { PriceFilter } from "./price-filter";
 
 // This is sample data.
 const data = {
@@ -51,23 +50,7 @@ const data = {
       items: [
         {
           title: "Preço",
-          Component: (
-            <div className="flex flex-col gap-4 py-4">
-              <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-900" htmlFor="minPrice">
-                  Preço mínimo
-                </label>
-                <Input id="minPrice" placeholder="Ex: 25,00" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-900" htmlFor="maxPrice">
-                  Preço máximo
-                </label>
-                <Input id="maxPrice" placeholder="Ex: 1000,00" />
-              </div>
-              <Button className="hover:cursor-pointer">Aplicar</Button>
-            </div>
-          ),
+          Component: <PriceFilter />,
         },
       ],
     },
