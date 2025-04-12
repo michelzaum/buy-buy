@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
-import { Card, CardContent, CardFooter } from "./ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatCurrency } from "@/lib/formatCurrency";
 
 interface ProductItemProps {

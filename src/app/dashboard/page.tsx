@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { ProductList } from "@/components/product-list";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { ProductList } from "@/components/product/product-list";
 import {
   Breadcrumb,
   BreadcrumbItem,
