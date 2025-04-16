@@ -5,13 +5,13 @@ import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/formatCurrency";
 
 interface ProductDetailsProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProductDetails({ params }: ProductDetailsProps) {
-  const { id } = params;
+  const { id } = await params;
 
   const product = await db.product.findUnique({
     where: {
