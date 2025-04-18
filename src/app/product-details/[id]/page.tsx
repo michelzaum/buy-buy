@@ -39,6 +39,15 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
   const suggestedProducts = await db.product.findMany({
     where: {
       categoryId: product.categoryId,
+      AND: {
+        NOT: [
+          {
+            id: {
+              equals: product.id,
+            },
+          },
+        ],
+      },
     },
     include: {
       category: true,
