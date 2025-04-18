@@ -1,31 +1,26 @@
 import { create } from "zustand";
-import { Prisma } from "@prisma/client";
-
-interface Product {
-  product: Prisma.ProductGetPayload<{
-    include: {
-      category: {
-        select: {
-          name: true;
-        };
-      };
-    };
-  }>;
-}
+import { devtools } from "zustand/middleware";
 
 type CartStore = {
-  selectedProduct: Product;
+  selectedProductId: string;
 };
 
 type CartActions = {
-  setSelectedProduct: (product: Product) => void;
+  setSelectedProductId: (productId: string) => void;
 };
 
-export const useCartStore = create<CartStore & CartActions>()((set) => ({
-  selectedProduct: {} as Product,
-  setSelectedProduct: (product: Product) =>
-    set((prevState) => ({
-      ...prevState,
-      selectedProduct: product,
-    })),
-}));
+export const useCartStore = create<CartStore & CartActions>()(
+  devtools(
+    (set) => ({
+      selectedProductId: "",
+      setSelectedProductId: (productId: string) =>
+        set((prevState) => ({
+          ...prevState,
+          selectedProductId: productId,
+        })),
+    }),
+    {
+      name: "buy-buy",
+    }
+  )
+);

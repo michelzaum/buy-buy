@@ -7,6 +7,7 @@ import { ArrowLeft, Minus, Plus } from "lucide-react";
 import { ProductList } from "@/components/product/product-list";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { useCartStore } from "@/store/CartStore";
 
 interface ProductProps {
   product: Prisma.ProductGetPayload<{
@@ -36,6 +37,10 @@ export function ProductDetailsComponent({
   suggestedProducts,
   product,
 }: SuggestedProductProps & ProductProps) {
+  const setSelectedProduct = useCartStore(
+    (state) => state.setSelectedProductId
+  );
+
   return (
     <div className="w-full flex justify-center">
       <div className="w-full flex flex-col items-center gap-6 px-6 md:max-w-9/12">
@@ -73,7 +78,10 @@ export function ProductDetailsComponent({
                   <Plus />
                 </button>
               </div>
-              <Button size={"lg"} onClick={() => console.log(product)}>
+              <Button
+                size={"lg"}
+                onClick={() => setSelectedProduct(product.id)}
+              >
                 Adicionar ao carrinho
               </Button>
             </div>
