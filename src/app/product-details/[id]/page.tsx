@@ -37,7 +37,7 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full flex flex-col gap-6 px-6">
+      <div className="w-full flex flex-col items-center gap-6 px-6 md:max-w-7xl">
         <Link
           href="/"
           className="w-full flex items-center justify-self-start gap-2"
@@ -45,13 +45,13 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
           <ArrowLeft />
           <span>Voltar</span>
         </Link>
-        <div className="h-96 w-full">
+        <div className="h-96 w-full md:flex md:gap-6 md:max-w-5xl">
           <div className="relative w-full h-full">
             <Image
               alt="Product image"
               src={product.imageUrl}
               fill
-              className="rounded-lg object-cover"
+              className="rounded-lg object-cover md:object-center"
             />
           </div>
           <div className="flex flex-col gap-3 mt-4">
