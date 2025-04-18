@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plus, Minus, ArrowLeft } from "lucide-react";
 import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { Button } from "@/components/ui/button";
 
 interface ProductDetailsProps {
   params: Promise<{
@@ -35,51 +36,49 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
   }
 
   return (
-    <>
-      <Link href="/" className="w-full">
-        <div className="flex items-center gap-2 py-4 px-12">
+    <div className="w-full flex justify-center">
+      <div className="w-full flex flex-col gap-6 px-6">
+        <Link
+          href="/"
+          className="w-full flex items-center justify-self-start gap-2"
+        >
           <ArrowLeft />
-          <span>Voltar para a lista de produtos</span>
-        </div>
-      </Link>
-      <div className="h-screen w-full flex flex-col justify-center items-center">
-        <div className="flex gap-8">
-          <Image
-            alt={product.name}
-            src={product.imageUrl}
-            width={900}
-            height={900}
-            className="rounded-lg max-h-[900px] bg-contain object-cover"
-          />
-          <div className="flex flex-col gap-4 py-10">
-            <strong className="text-4xl">{product.name}</strong>
-            <span className="font-medium">{product.description}</span>
-            <div className="flex flex-col gap-10 mt-16">
-              <strong className="text-3xl">
-                {formatCurrency(product.price)}
-              </strong>
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-8">
-                  <div className="flex items-center gap-4 border border-gray-500 rounded-lg p-4">
-                    <button className="px-2 hover:cursor-pointer">
-                      <Minus />
-                    </button>
-                    <span className="text-lg font-medium">1</span>
-                    <button className="px-2 hover:cursor-pointer">
-                      <Plus />
-                    </button>
-                  </div>
-                  <button className="bg-gray-900 rounded-lg px-8 py-4 flex items-center gap-2 hover:bg-gray-800 hover:cursor-pointer transition-colors">
-                    <span className="text-white text-lg font-medium">
-                      Adicionar ao carrinho
-                    </span>
-                  </button>
-                </div>
+          <span>Voltar</span>
+        </Link>
+        <div className="h-96 w-full">
+          <div className="relative w-full h-full">
+            <Image
+              alt="Product image"
+              src={product.imageUrl}
+              fill
+              className="rounded-lg object-cover"
+            />
+          </div>
+          <div className="flex flex-col gap-3 mt-4">
+            <div className="flex flex-col gap-1">
+              <strong className="text-2xl">{product.name}</strong>
+              <span className="text-base">{product.description}</span>
+            </div>
+            <span className="text-xl font-semibold">
+              {formatCurrency(product.price)}
+            </span>
+            <div className="w-full flex items-center gap-2 mt-4">
+              <div className="flex justify-center items-center flex-1 border rounded-lg">
+                <button className="px-6 py-2">
+                  <Minus />
+                </button>
+                <span className="font-semibold">{1}</span>
+                <button className="px-6 py-2">
+                  <Plus />
+                </button>
               </div>
+              <Button size={"lg"} className="flex-2">
+                Adicionar ao carrinho
+              </Button>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
