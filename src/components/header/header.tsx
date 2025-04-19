@@ -13,8 +13,11 @@ export function Header() {
             <span>Perfil</span>
           </Link>
         </div>
-        <button className="justify-self-end hover:cursor-pointer">
-          <ShoppingCart />
+        <button className="relative justify-self-end hover:cursor-pointer p-1">
+          <ShoppingCart className="h-6 w-6" />
+          <div className="absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center">
+            <span className="text-white text-xs">2</span>
+          </div>
         </button>
       </div>
     </header>
