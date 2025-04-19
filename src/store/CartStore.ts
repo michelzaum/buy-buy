@@ -3,7 +3,7 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type CartStore = {
-  selectedProductId: string[];
+  selectedProductIds: string[];
 };
 
 type CartActions = {
@@ -13,13 +13,13 @@ type CartActions = {
 export const useCartStore = create<CartStore & CartActions>()(
   devtools(
     immer((set) => ({
-      selectedProductId: [],
+      selectedProductIds: [],
       setSelectedProductId: (productId: string) =>
         set((prevState) => {
-          if (prevState.selectedProductId.find((productItem) => productItem === productId)) return;
+          if (prevState.selectedProductIds.find((productItem) => productItem === productId)) return;
 
-          prevState.selectedProductId =
-            prevState.selectedProductId.concat(productId);
+          prevState.selectedProductIds =
+            prevState.selectedProductIds.concat(productId);
         }),
     })),
     {

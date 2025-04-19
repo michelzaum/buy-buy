@@ -5,7 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/CartStore";
 
 export function Header() {
-  const selectedProducts = useCartStore(state => state.selectedProductId);
+  const selectedProducts = useCartStore(state => state.selectedProductIds);
 
   return (
     <header className="flex justify-center py-10">
