@@ -85,16 +85,17 @@ export function ProductDetailsComponent({
               {formatCurrency(product.price)}
             </span>
             <div className="w-full flex items-center gap-2 mt-4">
-              <div className="w-full flex justify-center items-center border rounded-lg">
+              <div className="w-full flex justify-center items-center gap-3 border rounded-lg max-w-36">
                 <button
-                  className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6"
+                  className="flex justify-center flex-1 py-2 rounded-sm hover:cursor-pointer md:px-4"
                   onClick={decrementProductQuantity}
+                  disabled={productQuantity === 1}
                 >
-                  <Minus />
+                  <Minus className={`${productQuantity === 1 ? 'text-gray-300' : ''} transition-colors duration-200 ease-in-out`} />
                 </button>
                 <span className="font-semibold">{productQuantity}</span>
                 <button
-                  className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6"
+                  className="flex justify-center flex-1 py-2 rounded-sm hover:cursor-pointer md:px-4"
                   onClick={incrementProductQuantity}
                 >
                   <Plus />
