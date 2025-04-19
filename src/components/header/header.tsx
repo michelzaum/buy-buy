@@ -1,7 +1,12 @@
+'use client';
+
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+import { useCartStore } from "@/store/CartStore";
 
 export function Header() {
+  const selectedProducts = useCartStore(state => state.selectedProductId);
+
   return (
     <header className="flex justify-center py-10">
       <div className="w-full max-w-lvw flex justify-center items-center px-10">
@@ -16,7 +21,7 @@ export function Header() {
         <button className="relative justify-self-end hover:cursor-pointer p-1">
           <ShoppingCart className="h-6 w-6" />
           <div className="absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center">
-            <span className="text-white text-xs">2</span>
+            <span className="text-white text-xs">{selectedProducts.length}</span>
           </div>
         </button>
       </div>
