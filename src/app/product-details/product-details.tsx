@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
+import { toast } from "sonner";
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import { ProductList } from "@/components/product/product-list";
 import { Button } from "@/components/ui/button";
@@ -103,10 +104,23 @@ export function ProductDetailsComponent({
               </div>
               <Button
                 size={"lg"}
-                onClick={() => setSelectedProduct({
-                  productId: product.id,
-                  quantity: productQuantity,
-                })}
+                onClick={() => {
+                  setSelectedProduct({
+                    productId: product.id,
+                    quantity: productQuantity,
+                  });
+
+                  toast.success('Produto adicionado ao carrinho!',
+                    {
+                      style: {
+                        backgroundColor: 'green',
+                        color: "white",
+                        fontSize: '1rem',
+                        fontWeight: 500,
+                      }
+                    }
+                  )
+                }}
                 className="hover:cursor-pointer"
               >
                 Adicionar ao carrinho

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { Header } from "@/components/header/header";
 import "./globals.css";
-import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Buy-buy",
@@ -17,7 +17,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
-        <Toaster position="bottom-left" />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );
