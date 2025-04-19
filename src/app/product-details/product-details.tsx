@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
@@ -37,9 +38,24 @@ export function ProductDetailsComponent({
   suggestedProducts,
   product,
 }: SuggestedProductProps & ProductProps) {
+  const [productQuantity, setProductQuantity] = useState(1);
   const setSelectedProduct = useCartStore(
     (state) => state.setSelectedProductId
   );
+
+  function incrementProductQuantity(): void {
+    setProductQuantity((prevState) => prevState + 1);
+  }
+
+  function decrementProductQuantity(): void {
+    setProductQuantity((prevState) => {
+      if (prevState === 1) {
+        return prevState;
+      }
+
+      return prevState - 1
+    });
+  }
 
   return (
     <div className="w-full flex justify-center">
@@ -70,11 +86,17 @@ export function ProductDetailsComponent({
             </span>
             <div className="w-full flex items-center gap-2 mt-4">
               <div className="w-full flex justify-center items-center border rounded-lg">
-                <button className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6">
+                <button
+                  className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6"
+                  onClick={decrementProductQuantity}
+                >
                   <Minus />
                 </button>
-                <span className="font-semibold">{1}</span>
-                <button className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6">
+                <span className="font-semibold">{productQuantity}</span>
+                <button
+                  className="flex justify-center flex-1 py-2 hover:cursor-pointer md:px-6"
+                  onClick={incrementProductQuantity}
+                >
                   <Plus />
                 </button>
               </div>
