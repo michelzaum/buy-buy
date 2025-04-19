@@ -40,7 +40,7 @@ export function ProductDetailsComponent({
 }: SuggestedProductProps & ProductProps) {
   const [productQuantity, setProductQuantity] = useState(1);
   const setSelectedProduct = useCartStore(
-    (state) => state.setSelectedProductId
+    (state) => state.setSelectedProduct
   );
 
   function incrementProductQuantity(): void {
@@ -103,7 +103,7 @@ export function ProductDetailsComponent({
               </div>
               <Button
                 size={"lg"}
-                onClick={() => setSelectedProduct(product.id)}
+                onClick={() => setSelectedProduct(product.id, productQuantity)}
                 className="hover:cursor-pointer"
               >
                 Adicionar ao carrinho
