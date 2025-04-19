@@ -81,6 +81,7 @@ export function ProductDetailsComponent({
               <Button
                 size={"lg"}
                 onClick={() => setSelectedProduct(product.id)}
+                className="hover:cursor-pointer"
               >
                 Adicionar ao carrinho
               </Button>
