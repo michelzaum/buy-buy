@@ -16,6 +16,8 @@ export const useCartStore = create<CartStore & CartActions>()(
       selectedProductId: [""],
       setSelectedProductId: (productId: string) =>
         set((prevState) => {
+          if (prevState.selectedProductId.find((productItem) => productItem === productId)) return;
+
           prevState.selectedProductId =
             prevState.selectedProductId.concat(productId);
         }),
