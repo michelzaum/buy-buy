@@ -13,7 +13,7 @@ type CartActions = {
 export const useCartStore = create<CartStore & CartActions>()(
   devtools(
     immer((set) => ({
-      selectedProductId: [""],
+      selectedProductId: [],
       setSelectedProductId: (productId: string) =>
         set((prevState) => {
           if (prevState.selectedProductId.find((productItem) => productItem === productId)) return;
