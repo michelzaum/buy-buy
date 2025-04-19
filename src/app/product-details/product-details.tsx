@@ -103,7 +103,10 @@ export function ProductDetailsComponent({
               </div>
               <Button
                 size={"lg"}
-                onClick={() => setSelectedProduct(product.id, productQuantity)}
+                onClick={() => setSelectedProduct({
+                  productId: product.id,
+                  quantity: productQuantity,
+                })}
                 className="hover:cursor-pointer"
               >
                 Adicionar ao carrinho

@@ -3,7 +3,7 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type CartItem = {
-  id: string,
+  productId: string,
   quantity: number,
 }
 
@@ -12,15 +12,24 @@ type CartStore = {
 };
 
 type CartActions = {
-  setSelectedProduct: (productId: string, quantity: number) => void;
+  setSelectedProduct: (product: CartItem) => void;
 };
 
 export const useCartStore = create<CartStore & CartActions>()(
   devtools(
     immer((set) => ({
       selectedProducts: [],
-      setSelectedProduct: (productId: string, quantity: number) => set((prevState) => {
-        prevState.selectedProducts.push({ id: productId, quantity: quantity });
+      setSelectedProduct: ({ productId, quantity }: CartItem) => set(({ selectedProducts }) => {
+        const alreadySelectedProductIndex = selectedProducts.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (alreadySelectedProductIndex >= 0) {
+          selectedProducts[alreadySelectedProductIndex].quantity += quantity;
+          return;
+        }
+
+        selectedProducts.push({ productId, quantity });
       })
     })),
     {
