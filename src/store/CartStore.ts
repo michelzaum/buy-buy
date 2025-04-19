@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 type CartStore = {
-  selectedProductId: string;
+  selectedProductId: string[];
 };
 
 type CartActions = {
@@ -16,7 +16,7 @@ export const useCartStore = create<CartStore & CartActions>()(
       setSelectedProductId: (productId: string) =>
         set((prevState) => ({
           ...prevState,
-          selectedProductId: productId,
+          selectedProductId: [...prevState.selectedProductId, productId],
         })),
     }),
     {
