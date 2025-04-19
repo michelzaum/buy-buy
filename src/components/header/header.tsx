@@ -20,7 +20,11 @@ export function Header() {
         </div>
         <button className="relative justify-self-end hover:cursor-pointer p-1">
           <ShoppingCart className="h-6 w-6" />
-          <div className="absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center">
+          <div
+            className={`absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center
+              ${selectedProducts.length === 0 && 'hidden'}
+            `}
+          >
             <span className="text-white text-xs">{selectedProducts.length}</span>
           </div>
         </button>
