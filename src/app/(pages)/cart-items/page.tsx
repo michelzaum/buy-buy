@@ -6,10 +6,22 @@ import { Product } from "@prisma/client";
 import { useCartStore } from "@/store/CartStore";
 import { getCartItems } from "@/app/_actions/get-cart-items";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface CardCartItem extends Product {
+  quantity: number;
+}
 
 export default function CartItems() {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const selectedProducts = useCartStore(state => state.selectedProducts);
 
   useEffect(() => {
@@ -17,7 +29,11 @@ export default function CartItems() {
       const response = await getCartItems({
         prodcutIds: selectedProducts.map(product => product?.productId)
       });
-      setCartItems(response);
+      const cartList = response.map((responseItem) => ({
+        ...responseItem,
+        quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
+      }))
+      setCartItems(cartList);
     }
 
     cartItems();
@@ -43,7 +59,7 @@ export default function CartItems() {
               </div>
             </div>
             <div>
-            <Select defaultValue="4">
+            <Select defaultValue={`${item.quantity}`}>
               <SelectTrigger>
                 <SelectValue placeholder='Selecione a quantidade' />
               </SelectTrigger>
@@ -55,7 +71,22 @@ export default function CartItems() {
                   <SelectItem value="3">3</SelectItem>
                   <SelectItem value="4">4</SelectItem>
                   <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="5">Selecione a quantidade</SelectItem>
+                  <SelectItem value="6">6</SelectItem>
+                  <SelectItem value="7">7</SelectItem>
+                  <SelectItem value="8">8</SelectItem>
+                  <SelectItem value="9">9</SelectItem>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="11">11</SelectItem>
+                  <SelectItem value="12">12</SelectItem>
+                  <SelectItem value="13">13</SelectItem>
+                  <SelectItem value="14">14</SelectItem>
+                  <SelectItem value="15">15</SelectItem>
+                  <SelectItem value="16">16</SelectItem>
+                  <SelectItem value="17">17</SelectItem>
+                  <SelectItem value="18">18</SelectItem>
+                  <SelectItem value="19">19</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="0">Selecione a quantidade</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
