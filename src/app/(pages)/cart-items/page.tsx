@@ -39,6 +39,10 @@ export default function CartItems() {
     cartItems();
   }, []);
 
+  function getTotalPrice(products: CardCartItem[]): number {
+    return products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+  }
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-4 p-6 w-full max-w-2xl">
@@ -93,6 +97,10 @@ export default function CartItems() {
             </div>
           </div>
         ))}
+        <div className="flex items-center justify-between my-2">
+          <span className="text-lg">Total</span>
+          <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
+        </div>
       </div>
     </div>
   )
