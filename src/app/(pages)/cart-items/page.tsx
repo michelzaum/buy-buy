@@ -50,7 +50,7 @@ export default function CartItems() {
                   src={item.imageUrl}
                   alt="Product image"
                   fill
-                  className="rounded-lg"
+                  className="rounded-lg object-cover"
                 />
               </div>
               <div className="flex flex-col gap-1">
