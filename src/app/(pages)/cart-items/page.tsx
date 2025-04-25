@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@prisma/client";
 import { useCartStore } from "@/store/CartStore";
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface CardCartItem extends Product {
   quantity: number;
@@ -27,12 +29,12 @@ export default function CartItems() {
   useEffect(() => {
     const cartItems = async () => {
       const response = await getCartItems({
-        prodcutIds: selectedProducts.map(product => product?.productId)
+        prodcutIds: selectedProducts.map(product => product?.productId),
       });
       const cartList = response.map((responseItem) => ({
         ...responseItem,
         quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
-      }))
+      }));
       setCartItems(cartList);
     }
 
@@ -46,7 +48,8 @@ export default function CartItems() {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-4 p-6 w-full max-w-2xl">
-        {cartItems.map((item) => (
+
+        {cartItems.length > 0 ? cartItems.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300">
             <div className="flex items-center gap-3">
               <div className="h-20 w-20 relative">
@@ -96,11 +99,23 @@ export default function CartItems() {
             </Select>
             </div>
           </div>
-        ))}
-        <div className="flex items-center justify-between my-2">
-          <span className="text-lg">Total</span>
-          <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
-        </div>
+        )) : (
+          <div className="w-full flex flex-col items-center gap-6 py-6">
+            <strong className="text-2xl">O carrinho está vazio.</strong>
+            <span className="font-medium text-lg text-center">Volte a lista de produtos para aproveitar os melhores preços :)</span>
+              <Button className="w-full sm:w-1/2 p-8 mt-6 hover:cursor-pointer">
+                <Link href='/'>
+                  <span className="text-base">Voltar a lista de produtos</span>
+                </Link>
+              </Button>
+          </div>
+        )}
+        {cartItems.length > 0 && (
+          <div className="flex items-center justify-between my-2">
+            <span className="text-lg">Total</span>
+            <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
+          </div>
+        )}
       </div>
     </div>
   )
