@@ -26,6 +26,7 @@ interface CardCartItem extends Product {
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const selectedProducts = useCartStore(state => state.selectedProducts);
+  const removeProduct = useCartStore(state => state.remoteProduct);
 
   useEffect(() => {
     const cartItems = async () => {
@@ -46,12 +47,21 @@ export default function CartItems() {
     return products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
   }
 
+  function handleDeleteItemFromCart(productId: string): void {
+    const updatedList = cartItems.filter((item) => item.id !== productId);
+    setCartItems(updatedList);
+    removeProduct(productId);
+  }
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
         {cartItems.length > 0 ? cartItems.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
-            <button className="bg-gray-50 shadow-md p-2 rounded-full absolute -top-6 -left-4 z-10 hover:bg-red-400 hover:cursor-pointer transition-colors duration-75 ease-in-out">
+            <button
+              className="bg-gray-50 shadow-md p-2 rounded-full absolute -top-6 -left-4 z-10 hover:bg-red-400 hover:cursor-pointer transition-colors duration-75 ease-in-out"
+              onClick={() => handleDeleteItemFromCart(item.id)}
+            >
               <Trash2 />
             </button>
             <div className="flex items-center gap-3">
