@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 import { Product } from "@prisma/client";
 import { useCartStore } from "@/store/CartStore";
 import { getCartItems } from "@/app/_actions/get-cart-items";
@@ -47,10 +48,12 @@ export default function CartItems() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col gap-4 p-6 w-full max-w-2xl">
-
+      <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
         {cartItems.length > 0 ? cartItems.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300">
+          <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
+            <button className="bg-gray-50 shadow-md p-2 rounded-full absolute -top-6 -left-4 z-10 hover:bg-red-400 hover:cursor-pointer transition-colors duration-75 ease-in-out">
+              <Trash2 />
+            </button>
             <div className="flex items-center gap-3">
               <div className="h-20 w-20 relative">
                 <Image
