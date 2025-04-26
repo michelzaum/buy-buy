@@ -135,10 +135,17 @@ export default function CartItems() {
           </div>
         )}
         {cartItems.length > 0 && (
-          <div className="flex items-center justify-between my-2">
-            <span className="text-lg">Total</span>
-            <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
-          </div>
+          <>
+            <div className="flex items-center justify-between my-2">
+              <span className="text-lg">Total</span>
+              <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
+            </div>
+            <div className="w-full py-4 flex justify-end">
+              <Button className="w-full py-8 sm:w-1/2 hover:cursor-pointer">
+                <span className="font-semibold text-lg">Continuar</span>
+              </Button>
+            </div>
+          </>
         )}
       </div>
     </div>
