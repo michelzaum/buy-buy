@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { Product } from "@prisma/client";
+import { toast } from "sonner";
 import { useCartStore } from "@/store/CartStore";
 import { getCartItems } from "@/app/_actions/get-cart-items";
 import { formatCurrency } from "@/lib/formatCurrency";
@@ -62,6 +63,14 @@ export default function CartItems() {
     setCartItems(updatedList);
     removeProduct(productId);
     setIsDeleteItemFromCartModalOpen(false);
+    toast.success('Produto excluído do carrinho', {
+      style: {
+        backgroundColor: 'red',
+        color: "white",
+        fontSize: '1rem',
+        fontWeight: 500,
+      },
+    });
   }
 
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
