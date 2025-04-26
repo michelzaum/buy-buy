@@ -173,8 +173,8 @@ export default function CartItems() {
           </>
         )}
         <Dialog open={isDeleteItemFromCartModalOpen}>
-          <DialogContent>
-            <DialogHeader>
+          <DialogContent className="[&>button]:hidden flex flex-col gap-6">
+            <DialogHeader className="flex flex-col gap-4">
               <DialogTitle>Tem certeza?</DialogTitle>
               <DialogDescription>
                 Quer mesmo excluir este item do carrinho? Você pode adicioná-lo novamente selecionando-o na lista de produtos.
