@@ -111,12 +111,12 @@ export default function CartItems() {
                 <span>{formatCurrency(item.price)}</span>
               </div>
             </div>
-            <div className="pr-1">
+            <div>
               <Select
                 defaultValue={`${item.quantity}`}
                 onValueChange={(value) => handleUpdateProductQuantity(item.id, Number(value))}
               >
-                <SelectTrigger>
+                <SelectTrigger className="pr-1 hover:cursor-pointer">
                   <SelectValue placeholder='Selecione a quantidade' />
                 </SelectTrigger>
                 <SelectContent>
