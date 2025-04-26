@@ -53,6 +53,14 @@ export default function CartItems() {
     removeProduct(productId);
   }
 
+  function handleUpdateProductQuantity(productId: string, quantity: number): void {
+    setCartItems((prevState) => {
+      return prevState.map((product) =>
+          product.id === productId ? {...product, quantity: quantity } : product,
+      );
+    });  
+  }
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
@@ -79,7 +87,10 @@ export default function CartItems() {
               </div>
             </div>
             <div>
-            <Select defaultValue={`${item.quantity}`}>
+            <Select
+              defaultValue={`${item.quantity}`}
+              onValueChange={(value) => handleUpdateProductQuantity(item.id, Number(value))}
+            >
               <SelectTrigger>
                 <SelectValue placeholder='Selecione a quantidade' />
               </SelectTrigger>
