@@ -17,6 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 interface CardCartItem extends Product {
@@ -25,6 +33,8 @@ interface CardCartItem extends Product {
 
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
+  const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
+  const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const selectedProducts = useCartStore(state => state.selectedProducts);
   const removeProduct = useCartStore(state => state.remoteProduct);
 
@@ -51,6 +61,7 @@ export default function CartItems() {
     const updatedList = cartItems.filter((item) => item.id !== productId);
     setCartItems(updatedList);
     removeProduct(productId);
+    setIsDeleteItemFromCartModalOpen(false);
   }
 
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
@@ -61,6 +72,11 @@ export default function CartItems() {
     });  
   }
 
+  function handleOpenDeleteItemFromCartModal(productId: string): void {
+    setSelectedItemToDeleteFromCart(productId);
+    setIsDeleteItemFromCartModalOpen(true);
+  }
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
@@ -68,7 +84,7 @@ export default function CartItems() {
           <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
             <button
               className="bg-gray-50 shadow-md p-2 rounded-full absolute -top-6 -left-4 z-10 hover:bg-red-400 hover:cursor-pointer transition-colors duration-75 ease-in-out"
-              onClick={() => handleDeleteItemFromCart(item.id)}
+              onClick={() => handleOpenDeleteItemFromCartModal(item.id)}
             >
               <Trash2 />
             </button>
@@ -147,6 +163,32 @@ export default function CartItems() {
             </div>
           </>
         )}
+        <Dialog open={isDeleteItemFromCartModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Tem certeza?</DialogTitle>
+              <DialogDescription>
+                Quer mesmo excluir este item do carrinho? Você pode adicioná-lo novamente selecionando-o na lista de produtos.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex flex-row w-full mt-4">
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                variant='secondary'
+                onClick={() => setIsDeleteItemFromCartModalOpen(false)}
+              >
+                <span className="font-semibold">Cancelar</span>
+              </Button>
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
+                variant='destructive'
+                onClick={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
+              >
+                <span className="font-semibold">Excluir</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
