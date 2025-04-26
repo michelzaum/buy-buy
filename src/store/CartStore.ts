@@ -13,6 +13,7 @@ type CartStore = {
 
 type CartActions = {
   setSelectedProduct: (product: CartItem) => void;
+  remoteProduct: (productId: string) => void;
 };
 
 export const useCartStore = create<CartStore & CartActions>()(
@@ -30,7 +31,10 @@ export const useCartStore = create<CartStore & CartActions>()(
         }
 
         selectedProducts.push({ productId, quantity });
-      })
+      }),
+      remoteProduct: (productId: string) => set(({ selectedProducts }) => ({
+        selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
+      })),
     })),
     {
       name: "buy-buy",
