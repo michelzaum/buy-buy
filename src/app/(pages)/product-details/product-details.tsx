@@ -40,6 +40,10 @@ export function ProductDetailsComponent({
   product,
 }: SuggestedProductProps & ProductProps) {
   const [productQuantity, setProductQuantity] = useState(1);
+
+  const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
+  const isMaxProductQuantityLimitReached = productQuantity === MAX_PRODUCT_QUANTITY_ALLOWED;
+
   const setSelectedProduct = useCartStore(
     (state) => state.setSelectedProduct
   );
@@ -96,10 +100,11 @@ export function ProductDetailsComponent({
                 </button>
                 <span className="font-semibold">{productQuantity}</span>
                 <button
+                  disabled={isMaxProductQuantityLimitReached}
                   className="flex justify-center flex-1 py-2 rounded-sm hover:cursor-pointer md:px-4"
                   onClick={incrementProductQuantity}
                 >
-                  <Plus />
+                  <Plus className={`${isMaxProductQuantityLimitReached ? 'text-gray-300' : ''} transition-colors duration-200 ease-in-out`}  />
                 </button>
               </div>
               <Button
