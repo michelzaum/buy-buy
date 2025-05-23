@@ -36,9 +36,7 @@ export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const selectedProducts = useCartStore(state => state.selectedProducts);
-  const updateProduct = useCartStore(state => state.updateProduct);
-  const removeProduct = useCartStore(state => state.remoteProduct);
+  const { selectedProducts, updateProduct, remoteProduct } = useCartStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -64,7 +62,7 @@ export default function CartItems() {
   function handleDeleteItemFromCart(productId: string): void {
     const updatedList = cartItems.filter((item) => item.id !== productId);
     setCartItems(updatedList);
-    removeProduct(productId);
+    remoteProduct(productId);
     setIsDeleteItemFromCartModalOpen(false);
     toast.success('Produto excluído do carrinho', {
       style: {
