@@ -36,8 +36,7 @@ export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const selectedProducts = useCartStore(state => state.selectedProducts);
-  const removeProduct = useCartStore(state => state.remoteProduct);
+  const { selectedProducts, updateProduct, removeProduct } = useCartStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -80,7 +79,9 @@ export default function CartItems() {
       return prevState.map((product) =>
           product.id === productId ? {...product, quantity: quantity } : product,
       );
-    });  
+    });
+
+    updateProduct(productId, quantity);
   }
 
   function handleOpenDeleteItemFromCartModal(productId: string): void {
@@ -110,7 +111,10 @@ export default function CartItems() {
               </div>
               <div className="flex flex-col gap-1">
                 <strong>{item.name}</strong>
-                <span>{formatCurrency(item.price)}</span>
+                <span>{formatCurrency(item.price * item.quantity)}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs">Valor unitário: {formatCurrency(item.price)}</span>
+                </div>
               </div>
             </div>
             <div>
