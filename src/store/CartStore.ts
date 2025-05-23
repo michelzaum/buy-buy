@@ -24,8 +24,14 @@ export const useCartStore = create<CartStore & CartActions>()(
         const alreadySelectedProductIndex = selectedProducts.findIndex(
           (item) => item.productId === productId
         );
-
+        
         if (alreadySelectedProductIndex >= 0) {
+          const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
+          if ((selectedProducts[alreadySelectedProductIndex].quantity + quantity) > MAX_PRODUCT_QUANTITY_ALLOWED) {
+            selectedProducts[alreadySelectedProductIndex].quantity = MAX_PRODUCT_QUANTITY_ALLOWED;
+            return;
+          }
+
           selectedProducts[alreadySelectedProductIndex].quantity += quantity;
           return;
         }
