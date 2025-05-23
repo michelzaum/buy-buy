@@ -37,6 +37,7 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const selectedProducts = useCartStore(state => state.selectedProducts);
+  const updateProduct = useCartStore(state => state.updateProduct);
   const removeProduct = useCartStore(state => state.remoteProduct);
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
@@ -81,6 +82,8 @@ export default function CartItems() {
           product.id === productId ? {...product, quantity: quantity } : product,
       );
     });
+
+    updateProduct(productId, quantity);
   }
 
   function handleOpenDeleteItemFromCartModal(productId: string): void {
