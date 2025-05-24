@@ -129,7 +129,7 @@ export default function CartItems() {
                   <SelectGroup>
                     <SelectLabel>Quantidade</SelectLabel>
                     {Array.from({ length: MAX_PRODUCT_QUANTITY_ALLOWED }, (_, i) => (
-                      <SelectItem value={String(i)}>{i}</SelectItem>
+                      <SelectItem value={String(i + 1)}>{i + 1}</SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
