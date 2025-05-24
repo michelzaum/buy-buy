@@ -35,6 +35,7 @@ interface CardCartItem extends Product {
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
+  const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const { selectedProducts, updateProduct, removeProduct } = useCartStore();
 
@@ -93,7 +94,7 @@ export default function CartItems() {
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
         <div className="w-full flex justify-end py-2">
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
             <span className="text-sm text-red-500 font-semibold md:text-base">
               Esvaziar carrinho
             </span>
@@ -187,6 +188,31 @@ export default function CartItems() {
                 className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
                 variant='destructive'
                 onClick={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
+              >
+                <span className="font-semibold">Excluir</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={isDeleteAllItemsFromCartModalOpen}>
+          <DialogContent className="[&>button]:hidden flex flex-col gap-6">
+            <DialogHeader className="flex flex-col gap-4">
+              <DialogTitle>Tem certeza?</DialogTitle>
+              <DialogDescription>
+                Quer mesmo excluir TODOS os itens do carrinho?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex flex-row w-full mt-4">
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                variant='secondary'
+                onClick={() => setIsDeleteAllItemsFromCartModalOpen(false)}
+              >
+                <span className="font-semibold">Cancelar</span>
+              </Button>
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
+                variant='destructive'
               >
                 <span className="font-semibold">Excluir</span>
               </Button>
