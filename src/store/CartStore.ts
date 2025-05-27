@@ -50,7 +50,7 @@ export const useCartStore = create<CartStore & CartActions>()(
           }
         });
       }),
-      removeAllProducts: () => set(({ selectedProducts }) => ({
+      removeAllProducts: () => set(() => ({
         selectedProducts: [],
       })),
     })),
