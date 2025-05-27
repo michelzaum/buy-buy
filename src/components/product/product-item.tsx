@@ -34,9 +34,9 @@ export function ProductItem({ product }: ProductItemProps) {
           <Image
             alt="Product Image"
             src={imageUrl}
-            width={300}
-            height={250}
-            className="rounded-md h-[200px] bg-contain object-cover"
+            width={500}
+            height={500}
+            className="w-full md:w-lvw rounded-md h-[200px] bg-contain object-cover"
           />
         </CardContent>
         <CardFooter>
