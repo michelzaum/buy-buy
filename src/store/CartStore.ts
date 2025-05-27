@@ -15,6 +15,7 @@ type CartActions = {
   setSelectedProduct: (product: CartItem) => void;
   removeProduct: (productId: string) => void;
   updateProduct: (productId: string, quantity: number) => void;
+  removeAllProducts: () => void;
 };
 
 export const useCartStore = create<CartStore & CartActions>()(
@@ -49,6 +50,9 @@ export const useCartStore = create<CartStore & CartActions>()(
           }
         });
       }),
+      removeAllProducts: () => set(({ selectedProducts }) => ({
+        selectedProducts: [],
+      })),
     })),
     {
       name: "buy-buy",
