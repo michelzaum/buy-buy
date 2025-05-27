@@ -35,8 +35,9 @@ interface CardCartItem extends Product {
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
+  const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct } = useCartStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useCartStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -64,7 +65,23 @@ export default function CartItems() {
     setCartItems(updatedList);
     removeProduct(productId);
     setIsDeleteItemFromCartModalOpen(false);
+
     toast.success('Produto excluído do carrinho', {
+      style: {
+        backgroundColor: 'red',
+        color: "white",
+        fontSize: '1rem',
+        fontWeight: 500,
+      },
+    });
+  }
+
+  function handleDeleteAllItemsFromCart(): void {
+    setCartItems([]);
+    removeAllProducts();
+    setIsDeleteAllItemsFromCartModalOpen(false);
+
+    toast.success('Produtos excluído do carrinho', {
       style: {
         backgroundColor: 'red',
         color: "white",
@@ -92,6 +109,15 @@ export default function CartItems() {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
+        {cartItems.length > 0 && (
+          <div className="w-full flex justify-end py-2">
+            <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
+              <span className="text-sm text-red-500 font-semibold md:text-base">
+                Esvaziar carrinho
+              </span>
+            </button>
+          </div>
+        )}
         {cartItems.length > 0 ? cartItems.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
             <button
@@ -180,6 +206,32 @@ export default function CartItems() {
                 className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
                 variant='destructive'
                 onClick={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
+              >
+                <span className="font-semibold">Excluir</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={isDeleteAllItemsFromCartModalOpen}>
+          <DialogContent className="[&>button]:hidden flex flex-col gap-6">
+            <DialogHeader className="flex flex-col gap-4">
+              <DialogTitle>Tem certeza?</DialogTitle>
+              <DialogDescription>
+                Quer mesmo excluir TODOS os itens do carrinho?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex flex-row w-full mt-4">
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                variant='secondary'
+                onClick={() => setIsDeleteAllItemsFromCartModalOpen(false)}
+              >
+                <span className="font-semibold">Cancelar</span>
+              </Button>
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
+                variant='destructive'
+                onClick={handleDeleteAllItemsFromCart}
               >
                 <span className="font-semibold">Excluir</span>
               </Button>
