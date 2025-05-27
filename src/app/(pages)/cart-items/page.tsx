@@ -37,7 +37,7 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct } = useCartStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useCartStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -65,7 +65,23 @@ export default function CartItems() {
     setCartItems(updatedList);
     removeProduct(productId);
     setIsDeleteItemFromCartModalOpen(false);
+
     toast.success('Produto excluído do carrinho', {
+      style: {
+        backgroundColor: 'red',
+        color: "white",
+        fontSize: '1rem',
+        fontWeight: 500,
+      },
+    });
+  }
+
+  function handleDeleteAllItemsFromCart(): void {
+    setCartItems([]);
+    removeAllProducts();
+    setIsDeleteAllItemsFromCartModalOpen(false);
+
+    toast.success('Produtos excluído do carrinho', {
       style: {
         backgroundColor: 'red',
         color: "white",
@@ -215,6 +231,7 @@ export default function CartItems() {
               <Button
                 className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
                 variant='destructive'
+                onClick={handleDeleteAllItemsFromCart}
               >
                 <span className="font-semibold">Excluir</span>
               </Button>
