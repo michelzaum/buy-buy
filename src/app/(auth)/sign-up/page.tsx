@@ -1,16 +1,43 @@
-import { Button } from "@/components/ui/button"
+'use client';
+
+import Link from "next/link";
+import { z } from 'zod';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+const schema = z.object({
+  name: z.string().min(1, 'Informe um nome'),
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Informe a senha'),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function SignUp() {
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  const handleSubmit = form.handleSubmit((formData): void => {
+    console.log(formData);
+  });
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -20,45 +47,60 @@ export default function SignUp() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="name"
-                placeholder="John Doe"
-                required
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-3">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
+        <Form {...form}>
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input placeholder="m@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <Input placeholder="m@example.com" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex flex-col gap-3">
               <Button type="submit" className="w-full">
                 Cadastrar
               </Button>
             </div>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Já tem uma conta?{" "}
-            <Link href="/sign-in" className="underline underline-offset-4">
-              Entre
-            </Link>
-          </div>
-        </form>
+          </form>
+        </Form>
+        <div className="mt-4 text-center text-sm">
+          Já tem uma conta?{" "}
+          <Link href="/sign-in" className="underline underline-offset-4">
+            Entre
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )
