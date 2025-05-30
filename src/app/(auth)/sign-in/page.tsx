@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,10 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 
-export default function SignIn({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function SignIn() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
