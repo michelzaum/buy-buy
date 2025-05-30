@@ -1,3 +1,10 @@
+'use client';
+
+import Link from "next/link";
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -7,10 +14,28 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+const schema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Informe a senha'),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function SignIn() {
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const handleSubmit = form.handleSubmit((formData): void => {
+    console.log(formData)
+  });
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -20,45 +45,50 @@ export default function SignIn() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-3">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <a
-                  href="#"
-                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                >
-                  Esqueceu sua senha?
-                </a>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
+        <Form {...form}>
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input placeholder="m@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <Input placeholder="********" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex flex-col gap-3">
               <Button type="submit" className="w-full">
-                Login
+                Entrar
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button type="button" variant="outline" className="w-full">
                 Login with Google
               </Button>
             </div>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{" "}
-            <Link href='/sign-up' className="underline underline-offset-4">
-              Cadastre-se
-            </Link>
-          </div>
-        </form>
+          </form>
+        </Form>
+        <div className="mt-4 text-center text-sm">
+          Não tem uma conta?{" "}
+          <Link href='/sign-up' className="underline underline-offset-4">
+            Cadastre-se
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )
