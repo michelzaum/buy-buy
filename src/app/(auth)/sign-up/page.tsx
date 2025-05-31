@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { toast } from "sonner";
 
 const schema = z.object({
   name: z.string().min(1, 'Informe um nome'),
@@ -36,7 +37,14 @@ export default function SignUp() {
   });
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
-    await axios.post('/api/auth/sign-up', formData);
+    try {
+      await axios.post('/api/auth/sign-up', formData);
+      toast.success('Conta cadastrada com sucesso', {
+        description: 'Faça login na sua conta',
+      });
+    } catch {
+      toast.error('Erro ao criar a sua conta');
+    }
   });
 
   return (
