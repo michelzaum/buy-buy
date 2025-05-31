@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { hash } from 'bcryptjs';
 
 const schema = z.object({
   name: z.string().min(1),
@@ -34,11 +35,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const hashedPassword = await hash(password, 12);
+
   await db.user.create({
     data: {
       email,
       name,
-      password,
+      password: hashedPassword,
     },
   })
 
