@@ -1,7 +1,10 @@
-import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+
+import { db } from "@/lib/db";
+import { env } from "@/app/config/env";
 
 const schema = z.object({
   email: z.string().email(),
@@ -43,7 +46,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  
+  const accessToken = sign(
+    { sub: user.id },
+    env.jwtSecret,
+    { expiresIn: '2d' },
+  );
 
-  return new NextResponse(null, { status: 204 });
+  return NextResponse.json({ accessToken }, { status: 200 });
 }
