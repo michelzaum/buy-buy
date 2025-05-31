@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       name,
       password: hashedPassword,
     },
-  })
+  });
 
-  return NextResponse.json({ ok: true }, { status: 201 });
+  return new NextResponse(null, { status: 204 });
 }
