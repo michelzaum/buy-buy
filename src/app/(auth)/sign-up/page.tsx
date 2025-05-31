@@ -4,6 +4,7 @@ import Link from "next/link";
 import { z } from 'zod';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from 'axios';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,8 +35,8 @@ export default function SignUp() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((formData): void => {
-    console.log(formData);
+  const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
+    await axios.post('/api/auth/sign-up', formData);
   });
 
   return (
