@@ -1,19 +1,23 @@
 'use client';
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from "sonner";
+import axios from "axios";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 const schema = z.object({
@@ -24,6 +28,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -32,8 +38,15 @@ export default function SignIn() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((formData): void => {
-    console.log(formData)
+  const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
+    try {
+      setIsLoading(true);
+      await axios.post('/api/auth/sign-in', formData);
+      router.push('/');
+    } catch {
+      toast.error('Credenciais inválidas');
+      setIsLoading(false);
+    }
   });
 
   return (
@@ -79,8 +92,13 @@ export default function SignIn() {
               )}
             />
             <div className="flex flex-col gap-3">
-              <Button type="submit" className="w-full">
-                Entrar
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+              >
+               {!isLoading && 'Entrar'}
+               {isLoading && 'Entrando...'}
               </Button>
               <Button type="button" variant="outline" className="w-full">
                 Login with Google
