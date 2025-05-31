@@ -1,10 +1,13 @@
 'use client';
 
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { z } from 'zod';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +19,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { toast } from "sonner";
 
 const schema = z.object({
   name: z.string().min(1, 'Informe um nome'),
@@ -27,6 +29,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function SignUp() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -38,11 +42,15 @@ export default function SignUp() {
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
+      setIsLoading(true);
       await axios.post('/api/auth/sign-up', formData);
+
+      router.push('/sign-in');
       toast.success('Conta cadastrada com sucesso', {
         description: 'Faça login na sua conta',
       });
     } catch {
+      setIsLoading(false);
       toast.error('Erro ao criar a sua conta');
     }
   });
@@ -98,8 +106,13 @@ export default function SignUp() {
               )}
             />
             <div className="flex flex-col gap-3">
-              <Button type="submit" className="w-full">
-                Cadastrar
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+              >
+                {!isLoading && 'Criar conta'}
+                {isLoading && 'Criando sua conta...'}
               </Button>
             </div>
           </form>
