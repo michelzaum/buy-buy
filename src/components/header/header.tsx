@@ -2,10 +2,19 @@
 
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import { useCartStore } from "@/store/CartStore";
 
 export function Header() {
+  const router = useRouter();
   const selectedProducts = useCartStore(state => state.selectedProducts);
+
+  async function handleSignOut(): Promise<void> {
+    await axios.post('/api/auth/sign-out');
+    router.push('/sign-in');
+  }
 
   return (
     <header className="flex justify-center py-10">
@@ -17,6 +26,7 @@ export function Header() {
           <Link href="/profile">
             <span>Perfil</span>
           </Link>
+          <button className="cursor-pointer" onClick={handleSignOut}>Sair</button>
         </div>
         <Link href='/cart-items' className="relative justify-self-end hover:cursor-pointer p-1">
           <ShoppingCart className="h-6 w-6" />
