@@ -44,11 +44,15 @@ export default function CartItems() {
       const response = await getCartItems({
         prodcutIds: selectedProducts.map(product => product?.productId),
       });
-      const cartList = response.map((responseItem) => ({
-        ...responseItem,
-        quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
-      }));
-      setCartItems(cartList);
+
+      if (response instanceof Array) {
+        const cartList = response.map((responseItem) => ({
+          ...responseItem,
+          quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
+        }));
+
+        setCartItems(cartList);
+      }
     }
 
     cartItems();
