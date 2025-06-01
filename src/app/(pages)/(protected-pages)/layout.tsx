@@ -1,14 +1,15 @@
 import { redirect } from "next/navigation";
-import { getAccessToken } from "@/lib/auth";
+
+import { auth } from "@/lib/auth";
 
 export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const accessToken = await getAccessToken();
+  const user = await auth();
 
-  if (!accessToken) {
+  if (!user) {
     return redirect('/sign-in');
   }
 
