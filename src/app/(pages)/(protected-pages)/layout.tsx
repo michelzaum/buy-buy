@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { AuthProvider } from "@/contexts/AuthContext";
 import { auth } from "@/lib/auth";
 
 export default async function ProtectedLayout({
@@ -13,5 +14,9 @@ export default async function ProtectedLayout({
     return redirect('/sign-in');
   }
 
-  return children;
+  return (
+    <AuthProvider user={user}>
+      {children}
+    </AuthProvider>
+  );
 }
