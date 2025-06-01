@@ -1,12 +1,12 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getAccessToken } from "@/lib/auth";
 
 export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const accessToken = (await cookies()).get('accessToken')?.value;
+  const accessToken = await getAccessToken();
 
   if (accessToken) {
     return redirect('/');
