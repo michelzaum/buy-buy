@@ -52,5 +52,19 @@ export async function POST(request: NextRequest) {
     { expiresIn: '2d' },
   );
 
-  return NextResponse.json({ accessToken }, { status: 200 });
+  const response = new NextResponse(null, { status: 204 });
+
+  response.cookies.set(
+    'accessToken',
+    accessToken,
+    {
+      httpOnly: true,
+      maxAge: 2 * 24 * 60 * 60, // 2 days
+      path: '/',
+      sameSite: 'strict',
+      secure: true,
+    },
+  );
+
+  return response;
 }
