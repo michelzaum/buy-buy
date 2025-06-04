@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useStore } from "@/store/store";
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -28,7 +29,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function SignIn() {
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -37,11 +37,17 @@ export default function SignIn() {
       password: '',
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useStore();
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
       setIsLoading(true);
-      await axios.post('/api/auth/sign-in', formData);
+      const { data} = await axios.post('/api/auth/sign-in', formData);
+      setUser({
+        email: data.email,
+        name: data.name,
+      });
       router.push('/');
     } catch {
       toast.error('Credenciais inválidas');
