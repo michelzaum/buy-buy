@@ -1,6 +1,5 @@
-import { User } from "@/entities/User";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type CartItem = {
@@ -15,7 +14,7 @@ type BasicUserInfo = {
 
 type Store = {
   selectedProducts: CartItem[];
-  user: BasicUserInfo;
+  user: BasicUserInfo | undefined;
 };
 
 type Actions = {
@@ -26,28 +25,34 @@ type Actions = {
 
 export const useStore = create<Store & Actions>()(
   devtools(
-    immer((set) => ({
-      selectedProducts: [],
-      setSelectedProduct: ({ productId, quantity }: CartItem) => set(({ selectedProducts }) => {
-        const alreadySelectedProductIndex = selectedProducts.findIndex(
-          (item) => item.productId === productId
-        );
+    persist(
+      immer((set) => ({
+        selectedProducts: [],
+        setSelectedProduct: ({ productId, quantity }: CartItem) => set(({ selectedProducts }) => {
+          const alreadySelectedProductIndex = selectedProducts.findIndex(
+            (item) => item.productId === productId
+          );
 
-        if (alreadySelectedProductIndex >= 0) {
-          selectedProducts[alreadySelectedProductIndex].quantity += quantity;
-          return;
-        }
+          if (alreadySelectedProductIndex >= 0) {
+            selectedProducts[alreadySelectedProductIndex].quantity += quantity;
+            return;
+          }
 
-        selectedProducts.push({ productId, quantity });
-      }),
-      remoteProduct: (productId: string) => set(({ selectedProducts }) => ({
-        selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
+          selectedProducts.push({ productId, quantity });
+        }),
+        remoteProduct: (productId: string) => set(({ selectedProducts }) => ({
+          selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
+        })),
+        user: undefined,
+        setUser: (userData: BasicUserInfo) => set(() => ({
+          user: userData,
+        })),
       })),
-      user: {} as User,
-      setUser: (userData: BasicUserInfo) => set(() => ({
-        user: userData,
-      })),
-    })),
+      {
+        name: 'buy-buy-storage',
+        storage: createJSONStorage(() => sessionStorage),
+      },
+    ),
     {
       name: "buy-buy",
     }
