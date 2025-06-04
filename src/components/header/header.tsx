@@ -9,10 +9,11 @@ import { useStore } from "@/store/store";
 
 export function Header() {
   const router = useRouter();
-  const selectedProducts = useStore(state => state.selectedProducts);
+  const { selectedProducts, setUser } = useStore();
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
+    setUser(undefined);
     router.push('/sign-in');
   }
 
