@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { Product } from "@prisma/client";
 import { toast } from "sonner";
-import { useCartStore } from "@/store/CartStore";
+import { useStore } from "@/store/store";
 import { getCartItems } from "@/app/_actions/get-cart-items";
 import { formatCurrency } from "@/lib/formatCurrency";
 import {
@@ -36,8 +36,8 @@ export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const selectedProducts = useCartStore(state => state.selectedProducts);
-  const removeProduct = useCartStore(state => state.remoteProduct);
+  const selectedProducts = useStore(state => state.selectedProducts);
+  const removeProduct = useStore(state => state.remoteProduct);
 
   useEffect(() => {
     const cartItems = async () => {

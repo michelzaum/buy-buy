@@ -1,3 +1,4 @@
+import { User } from "@/entities/User";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -7,16 +8,23 @@ type CartItem = {
   quantity: number,
 }
 
-type CartStore = {
-  selectedProducts: CartItem[];
+type BasicUserInfo = {
+  email: string;
+  name: string;
 };
 
-type CartActions = {
+type Store = {
+  selectedProducts: CartItem[];
+  user: BasicUserInfo;
+};
+
+type Actions = {
   setSelectedProduct: (product: CartItem) => void;
   remoteProduct: (productId: string) => void;
+  setUser: (user: BasicUserInfo) => void;
 };
 
-export const useCartStore = create<CartStore & CartActions>()(
+export const useStore = create<Store & Actions>()(
   devtools(
     immer((set) => ({
       selectedProducts: [],
@@ -34,6 +42,10 @@ export const useCartStore = create<CartStore & CartActions>()(
       }),
       remoteProduct: (productId: string) => set(({ selectedProducts }) => ({
         selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
+      })),
+      user: {} as User,
+      setUser: (userData: BasicUserInfo) => set(() => ({
+        user: userData,
       })),
     })),
     {

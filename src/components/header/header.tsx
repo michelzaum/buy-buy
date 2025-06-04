@@ -5,11 +5,11 @@ import { ShoppingCart } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-import { useCartStore } from "@/store/CartStore";
+import { useStore } from "@/store/store";
 
 export function Header() {
   const router = useRouter();
-  const selectedProducts = useCartStore(state => state.selectedProducts);
+  const selectedProducts = useStore(state => state.selectedProducts);
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
