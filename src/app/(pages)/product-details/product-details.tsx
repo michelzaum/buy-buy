@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { toast } from "sonner";
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import { ProductList } from "@/components/product/product-list";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { useCartStore } from "@/store/CartStore";
+import { useStore } from "@/store/store";
 
 interface ProductProps {
   product: Prisma.ProductGetPayload<{
@@ -39,10 +40,9 @@ export function ProductDetailsComponent({
   suggestedProducts,
   product,
 }: SuggestedProductProps & ProductProps) {
+  const router = useRouter();
   const [productQuantity, setProductQuantity] = useState(1);
-  const setSelectedProduct = useCartStore(
-    (state) => state.setSelectedProduct
-  );
+  const { user, setSelectedProduct } = useStore();
 
   function incrementProductQuantity(): void {
     setProductQuantity((prevState) => prevState + 1);
@@ -56,6 +56,29 @@ export function ProductDetailsComponent({
 
       return prevState - 1
     });
+  }
+
+  function addToCart(): void {
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
+
+    setSelectedProduct({
+      productId: product.id,
+      quantity: productQuantity,
+    });
+
+    toast.success('Produto adicionado ao carrinho!',
+      {
+        style: {
+          backgroundColor: 'green',
+          color: "white",
+          fontSize: '1rem',
+          fontWeight: 500,
+        }
+      }
+    )
   }
 
   return (
@@ -104,23 +127,7 @@ export function ProductDetailsComponent({
               </div>
               <Button
                 size={"lg"}
-                onClick={() => {
-                  setSelectedProduct({
-                    productId: product.id,
-                    quantity: productQuantity,
-                  });
-
-                  toast.success('Produto adicionado ao carrinho!',
-                    {
-                      style: {
-                        backgroundColor: 'green',
-                        color: "white",
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                      }
-                    }
-                  )
-                }}
+                onClick={addToCart}
                 className="hover:cursor-pointer"
               >
                 Adicionar ao carrinho

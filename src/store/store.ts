@@ -20,7 +20,7 @@ type Store = {
 type Actions = {
   setSelectedProduct: (product: CartItem) => void;
   remoteProduct: (productId: string) => void;
-  setUser: (user: BasicUserInfo) => void;
+  setUser: (user?: BasicUserInfo) => void;
 };
 
 export const useStore = create<Store & Actions>()(
@@ -44,7 +44,7 @@ export const useStore = create<Store & Actions>()(
           selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
         })),
         user: undefined,
-        setUser: (userData: BasicUserInfo) => set(() => ({
+        setUser: (userData?: BasicUserInfo) => set(() => ({
           user: userData,
         })),
       })),
