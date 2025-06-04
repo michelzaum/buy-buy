@@ -27,7 +27,6 @@ export async function POST(request: NextRequest) {
 
   const user = await db.user.findUnique({
     where: { email },
-    select: { id: true, email: true, password: true },
   });
 
   if (!user) {
@@ -52,7 +51,10 @@ export async function POST(request: NextRequest) {
     { expiresIn: '2d' },
   );
 
-  const response = new NextResponse(null, { status: 204 });
+  const response = NextResponse.json(
+    { name: user.name, email: user.email },
+    { status: 200 },
+  );
 
   response.cookies.set(
     'accessToken',
