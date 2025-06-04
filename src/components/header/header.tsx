@@ -9,11 +9,15 @@ import { useStore } from "@/store/store";
 
 export function Header() {
   const router = useRouter();
-  const { selectedProducts, setUser } = useStore();
+  const { selectedProducts, setUser, user } = useStore();
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
     setUser(undefined);
+    router.push('/sign-in');
+  }
+
+  function navigateToSignInPage(): void {
     router.push('/sign-in');
   }
 
@@ -27,7 +31,11 @@ export function Header() {
           <Link href="/profile">
             <span>Perfil</span>
           </Link>
-          <button className="cursor-pointer" onClick={handleSignOut}>Sair</button>
+          {user ? (
+            <button className="cursor-pointer" onClick={handleSignOut}>Sair</button>
+          ): (
+            <button className="cursor-pointer" onClick={navigateToSignInPage}>Entrar</button>
+          )}
         </div>
         <Link href='/cart-items' className="relative justify-self-end hover:cursor-pointer p-1">
           <ShoppingCart className="h-6 w-6" />
