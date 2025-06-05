@@ -27,6 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/header/header";
 
 interface CardCartItem extends Product {
   quantity: number;
@@ -92,7 +93,8 @@ export default function CartItems() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
+      <div className="flex flex-col gap-8 px-4 w-full max-w-2xl">
+        <Header />
         {cartItems.length > 0 ? cartItems.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
             <button
