@@ -13,8 +13,8 @@ export function Header() {
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
+    navigateToSignInPage();
     setUser(undefined);
-    router.push('/sign-in');
   }
 
   function navigateToSignInPage(): void {
