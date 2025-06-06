@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 import { toast } from "sonner";
+import { Loader } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -111,8 +112,13 @@ export default function SignUp() {
                 className="w-full"
                 disabled={isLoading}
               >
-                {!isLoading && 'Criar conta'}
-                {isLoading && 'Criando sua conta...'}
+               {!isLoading && 'Criar conta'}
+               {isLoading && (
+                <div className="flex items-center gap-2">
+                  <span>Criando sua conta...</span>
+                  <Loader className="animate-spin" />
+                </div>
+               )}
               </Button>
             </div>
           </form>
