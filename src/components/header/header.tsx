@@ -20,7 +20,7 @@ export function Header() {
   }
 
   function navigateToSignInPage(): void {
-    router.push('/sign-in');
+    router.replace('/sign-in');
   }
 
   return (
