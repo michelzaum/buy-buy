@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from "sonner";
 import axios from "axios";
+import { Loader } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -104,7 +105,12 @@ export default function SignIn() {
                 disabled={isLoading}
               >
                {!isLoading && 'Entrar'}
-               {isLoading && 'Entrando...'}
+               {isLoading && (
+                <div className="flex items-center gap-2">
+                  <span>Entrando...</span>
+                  <Loader className="animate-spin" />
+                </div>
+               )}
               </Button>
               <Button type="button" variant="outline" className="w-full">
                 Login with Google
