@@ -10,6 +10,8 @@ import { useStore } from "@/store/store";
 export function Header() {
   const router = useRouter();
   const { selectedProducts, setUser, user } = useStore();
+  
+  const shouldShowSelectedProductsQuantity = selectedProducts.length > 0 && !!user;
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
@@ -41,7 +43,7 @@ export function Header() {
           <ShoppingCart className="h-6 w-6" />
           <div
             className={`absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center
-              ${selectedProducts.length === 0 && 'hidden'}
+              ${!shouldShowSelectedProductsQuantity && 'hidden'}
             `}
           >
             <span className="text-white text-xs">{selectedProducts.length}</span>
