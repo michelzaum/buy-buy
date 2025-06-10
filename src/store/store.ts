@@ -19,7 +19,9 @@ type Store = {
 
 type Actions = {
   setSelectedProduct: (product: CartItem) => void;
-  remoteProduct: (productId: string) => void;
+  removeProduct: (productId: string) => void;
+  updateProduct: (productId: string, quantity: number) => void;
+  removeAllProducts: () => void;
   setUser: (user?: BasicUserInfo) => void;
 };
 
@@ -40,8 +42,18 @@ export const useStore = create<Store & Actions>()(
 
           selectedProducts.push({ productId, quantity });
         }),
-        remoteProduct: (productId: string) => set(({ selectedProducts }) => ({
+        removeProduct: (productId: string) => set(({ selectedProducts }) => ({
           selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
+        })),
+        updateProduct: (productId: string, quantity: number) => set(({ selectedProducts }) => {
+          selectedProducts.forEach((product) => {
+            if (product.productId === productId) {
+              product.quantity = quantity;
+            }
+          });
+        }),
+        removeAllProducts: () => set(() => ({
+          selectedProducts: [],
         })),
         user: undefined,
         setUser: (userData?: BasicUserInfo) => set(() => ({
