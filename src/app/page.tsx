@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { ProductList } from "@/components/product/product-list";
 import { db } from "@/lib/db";
+import { Header } from "@/components/header/header";
 
 export default async function Home() {
   const products = await db.product.findMany({
@@ -18,6 +19,7 @@ export default async function Home() {
   return (
     <SidebarProvider>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <Header />
         <div className="flex gap-6">
           <AppSidebar />
           <div className="flex flex-col">
