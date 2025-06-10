@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { Product } from "@prisma/client";
 import { toast } from "sonner";
-import { useCartStore } from "@/store/CartStore";
+import { useStore } from "@/store/store";
 import { getCartItems } from "@/app/_actions/get-cart-items";
 import { formatCurrency } from "@/lib/formatCurrency";
 import {
@@ -27,6 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/header/header";
 
 interface CardCartItem extends Product {
   quantity: number;
@@ -37,7 +38,7 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useCartStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -46,11 +47,15 @@ export default function CartItems() {
       const response = await getCartItems({
         prodcutIds: selectedProducts.map(product => product?.productId),
       });
-      const cartList = response.map((responseItem) => ({
-        ...responseItem,
-        quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
-      }));
-      setCartItems(cartList);
+
+      if (response instanceof Array) {
+        const cartList = response.map((responseItem) => ({
+          ...responseItem,
+          quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
+        }));
+
+        setCartItems(cartList);
+      }
     }
 
     cartItems();
@@ -108,7 +113,8 @@ export default function CartItems() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
+      <div className="flex flex-col gap-8 px-4 w-full max-w-2xl">
+        <Header />
         {cartItems.length > 0 && (
           <div className="w-full flex justify-end py-2">
             <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
@@ -155,7 +161,7 @@ export default function CartItems() {
                   <SelectGroup>
                     <SelectLabel>Quantidade</SelectLabel>
                     {Array.from({ length: MAX_PRODUCT_QUANTITY_ALLOWED }, (_, i) => (
-                      <SelectItem value={String(i + 1)}>{i + 1}</SelectItem>
+                      <SelectItem key={String(i + 1)} value={String(i + 1)}>{i + 1}</SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
