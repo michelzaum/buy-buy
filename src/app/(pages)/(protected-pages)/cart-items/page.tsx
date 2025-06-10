@@ -113,7 +113,8 @@ export default function CartItems() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col gap-8 p-6 w-full max-w-2xl">
+      <div className="flex flex-col gap-8 px-4 w-full max-w-2xl">
+        <Header />
         {cartItems.length > 0 && (
           <div className="w-full flex justify-end py-2">
             <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
