@@ -11,9 +11,10 @@ interface ProductListProps {
       };
     };
   }>[];
+  isSuggestedProduct?: boolean;
 }
 
-export function ProductList({ products }: ProductListProps) {
+export function ProductList({ products, isSuggestedProduct }: ProductListProps) {
   if (products.length === 0) {
     return (
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
@@ -25,7 +26,7 @@ export function ProductList({ products }: ProductListProps) {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
       {products.map((product) => (
-        <ProductItem key={product.id} product={product} />
+        <ProductItem isSuggestedProduct={isSuggestedProduct} key={product.id} product={product} />
       ))}
     </div>
   );

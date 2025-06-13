@@ -14,9 +14,10 @@ interface ProductItemProps {
       };
     };
   }>;
+  isSuggestedProduct?: boolean;
 }
 
-export function ProductItem({ product }: ProductItemProps) {
+export function ProductItem({ product, isSuggestedProduct }: ProductItemProps) {
   const {
     imageUrl,
     name,
@@ -25,7 +26,7 @@ export function ProductItem({ product }: ProductItemProps) {
     category: { name: categoryName },
   } = product;
   return (
-    <Link href={`product-details/${product.id}`}>
+    <Link href={isSuggestedProduct ? `${product.id}` : `product-details/${product.id}`}>
       <Card className="w-full md:max-w-2xs hover:cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out">
         <CardContent className="flex flex-col justify-center gap-4">
           <span className="text-xs uppercase text-gray-500">
