@@ -166,7 +166,7 @@ export function ProductDetailsComponent({
             <span className="flex py-6 font-medium">
               Outros produtos da categoria {product.category.name}
             </span>
-            <ProductList products={suggestedProducts} />
+            <ProductList isSuggestedProduct products={suggestedProducts} />
           </div>
       </div>
     </div>
