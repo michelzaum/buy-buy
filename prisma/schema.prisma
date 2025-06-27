@@ -19,11 +19,11 @@ model User {
 
 model RefreshToken {
   id        String   @id @default(uuid()) @db.Uuid
-  accountId String   @db.Uuid
+  userId    String   @db.Uuid
   issuedAt  DateTime @default(now())
   expiresAt DateTime
 
-  user User @relation(fields: [accountId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Product {
@@ -47,7 +47,7 @@ model Category {
 
 model Cart {
   id     String     @id @default(uuid())
-  userId String     @unique
+  userId String     @unique @db.Uuid
   items  CartItem[]
 
   user User @relation(fields: [userId], references: [id])
