@@ -14,4 +14,10 @@ export class RefreshTokenRepository {
       },
     });
   }
+
+  async findById(id: string): Promise<RefreshToken | null> {
+    return db.refreshToken.findUnique({
+      where: { id },
+    });
+  }
 }
