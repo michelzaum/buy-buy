@@ -31,5 +31,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  if (Date.now() > refreshToken.expiresAt.getTime()) {
+    return NextResponse.json(
+      { error: "Invalid refresh token" },
+      { status: 401 },
+    );
+  }
+
   return NextResponse.json({ request })
 }
