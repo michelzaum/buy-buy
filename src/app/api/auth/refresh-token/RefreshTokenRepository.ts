@@ -20,4 +20,10 @@ export class RefreshTokenRepository {
       where: { id },
     });
   }
+
+  async delete(id: string) {
+    return db.refreshToken.delete({
+      where: { id },
+    });
+  }
 }
