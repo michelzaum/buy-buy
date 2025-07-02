@@ -4,14 +4,12 @@ import { sign } from "jsonwebtoken";
 
 import { RefreshTokenRepository } from "./RefreshTokenRepository";
 import { env } from "@/app/config/env";
+import { EXP_TIME_IN_DAYS } from "@/lib/constants";
 
 export async function POST(request: NextRequest) {
   // TODO: Check the possibility to transform this file in a class
   // and receive this repository in contructor
   const refreshTokenRepository = new RefreshTokenRepository();
-  
-  // TODO: move this to a constant file
-  const EXP_TIME_IN_DAYS = 5;
 
   const schema = z.object({
     refreshToken: z.string().uuid(),
