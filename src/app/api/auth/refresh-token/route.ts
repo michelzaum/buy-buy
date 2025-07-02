@@ -50,5 +50,5 @@ export async function POST(request: NextRequest) {
     refreshTokenRepository.create({ userId: refreshToken.userId, expiresAt }),
   ]);
 
-  return NextResponse.json({ accessToken, newRefreshToken });
+  return NextResponse.json({ accessToken, refreshToken: newRefreshToken.id });
 }
