@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
   const { id } = await refreshTokenRepository.create({ userId: user.id, expiresAt });
 
   const response = NextResponse.json(
-    { name: user.name, email: user.email, refreshToken: id },
+    { name: user.name, email: user.email },
     { status: 200 },
   );
 
@@ -71,6 +71,17 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       maxAge: 2 * 24 * 60 * 60, // 2 days
       path: '/',
+      sameSite: 'strict',
+      secure: true,
+    },
+  );
+  response.cookies.set(
+    'refreshToken',
+    id,
+    {
+      httpOnly: false,
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+      path: '/refresh-token',
       sameSite: 'strict',
       secure: true,
     },
