@@ -44,7 +44,7 @@ export default function SignIn() {
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data} = await axios.post('/api/auth/sign-in', formData);
+      const { data } = await axios.post('/api/auth/sign-in', formData);
       setUser({
         email: data.email,
         name: data.name,
