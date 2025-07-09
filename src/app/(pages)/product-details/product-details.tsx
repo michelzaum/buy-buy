@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useStore } from "@/store/store";
 import { Header } from "@/components/header/header";
+import { saveCartItems } from "@/app/_actions/save-cart-items";
 
 interface ProductProps {
   product: Prisma.ProductGetPayload<{
@@ -77,11 +78,22 @@ export function ProductDetailsComponent({
     });
   }
 
-  function addToCart(): void {
+  async function addToCart(): Promise<void> {
     if (!user) {
       router.push('/sign-in');
       return;
     }
+
+    await saveCartItems({
+      productId: product.id,
+      quantity: productQuantity,
+      userEmail: user.email,
+    });
+
+    // TODO: We also need to save this information in database on
+    // Cart table, so the user will be able to access the cart items
+    // even if they leave the application. We also need to validate
+    // the access token.
 
     setSelectedProduct({
       productId: product.id,
