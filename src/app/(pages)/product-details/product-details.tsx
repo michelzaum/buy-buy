@@ -78,13 +78,14 @@ export function ProductDetailsComponent({
     });
   }
 
-  async function addToCart(): Promise<void> {
-    setSelectedProduct({
-      productId: product.id,
-      quantity: productQuantity,
-    });
-
+  async function addToCart(): Promise<void> {    
     if (!user) {
+      setSelectedProduct({
+        productId: product.id,
+        quantity: productQuantity,
+        wasAddedByAuthenticatedUser: false,
+      });
+
       router.push('/sign-in');
       return;
     }
@@ -93,6 +94,12 @@ export function ProductDetailsComponent({
       productId: product.id,
       quantity: productQuantity,
       userEmail: user.email,
+    });
+
+    setSelectedProduct({
+      productId: product.id,
+      quantity: productQuantity,
+      wasAddedByAuthenticatedUser: true,
     });
 
     // TODO: We also need to save this information in database on
