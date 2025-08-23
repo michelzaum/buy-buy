@@ -79,6 +79,11 @@ export function ProductDetailsComponent({
   }
 
   async function addToCart(): Promise<void> {
+    setSelectedProduct({
+      productId: product.id,
+      quantity: productQuantity,
+    });
+
     if (!user) {
       router.push('/sign-in');
       return;
@@ -94,11 +99,6 @@ export function ProductDetailsComponent({
     // Cart table, so the user will be able to access the cart items
     // even if they leave the application. We also need to validate
     // the access token.
-
-    setSelectedProduct({
-      productId: product.id,
-      quantity: productQuantity,
-    });
 
     toast.success('Produto adicionado ao carrinho!',
       {
