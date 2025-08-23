@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useStore } from "@/store/store";
+import { saveCartItems } from "@/app/_actions/save-cart-items";
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -39,16 +40,33 @@ export default function SignIn() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useStore();
+  const { setUser, selectedProducts } = useStore();
+
+  async function saveCartItemsByNotAuthenticaedUser(selectedProducts: {
+    productId: string;
+    quantity: number;
+    wasAddedByAuthenticatedUser?: boolean;
+  }[],
+  userEmail: string,
+) {
+    for (let i = 0; selectedProducts.length > i; i++) {
+      if (!selectedProducts[i].wasAddedByAuthenticatedUser) {
+        await saveCartItems({
+          productId: selectedProducts[i].productId,
+          quantity: selectedProducts[i].quantity,
+          userEmail,
+        });
+      }
+    }
+  }
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
       setIsLoading(true);
       const { data } = await axios.post('/api/auth/sign-in', formData);
-      setUser({
-        email: data.email,
-        name: data.name,
-      });
+      setUser({ email: data.email, name: data.name });
+      saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email);
+
       router.push('/');
     } catch {
       toast.error('Credenciais inválidas');
