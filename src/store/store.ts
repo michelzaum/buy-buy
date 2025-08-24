@@ -31,17 +31,18 @@ export const useStore = create<Store & Actions>()(
     persist(
       immer((set) => ({
         selectedProducts: [],
-        setSelectedProduct: ({ productId, quantity, wasAddedByAuthenticatedUser: wasAddedByAnonymousUser }: CartItem) => set(({ selectedProducts }) => {
+        setSelectedProduct: ({ productId, quantity, wasAddedByAuthenticatedUser }: CartItem) => set(({ selectedProducts }) => {
           const alreadySelectedProductIndex = selectedProducts.findIndex(
             (item) => item.productId === productId
           );
 
           if (alreadySelectedProductIndex >= 0) {
             selectedProducts[alreadySelectedProductIndex].quantity += quantity;
+            selectedProducts[alreadySelectedProductIndex].wasAddedByAuthenticatedUser = wasAddedByAuthenticatedUser;
             return;
           }
 
-          selectedProducts.push({ productId, quantity, wasAddedByAuthenticatedUser: wasAddedByAnonymousUser });
+          selectedProducts.push({ productId, quantity, wasAddedByAuthenticatedUser });
         }),
         removeProduct: (productId: string) => set(({ selectedProducts }) => ({
           selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
