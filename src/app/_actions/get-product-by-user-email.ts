@@ -13,6 +13,7 @@ export async function getProductsByUserEmail(userEmail: string) {
       items: {
         select: {
           productId: true,
+          quantity: true,
         },
       },
     },
