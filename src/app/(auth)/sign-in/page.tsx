@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useStore } from "@/store/store";
 import { saveCartItems } from "@/app/_actions/save-cart-items";
+import { getProductsByUserEmail } from "@/app/_actions/get-product-by-user-email";
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -43,14 +44,22 @@ export default function SignIn() {
   const { setUser, selectedProducts } = useStore();
 
   async function saveCartItemsByNotAuthenticaedUser(selectedProducts: {
+    // TODO: create a type for these props
     productId: string;
     quantity: number;
     wasAddedByAuthenticatedUser?: boolean;
   }[],
   userEmail: string,
+  userProducts: string[],
 ) {
     for (let i = 0; selectedProducts.length > i; i++) {
+      // TODO: We also need to check if this product was already added in database for this user.
+      // If so, avoid to save it again.
       if (!selectedProducts[i].wasAddedByAuthenticatedUser) {
+        if (userProducts.includes(selectedProducts[i].productId)) {
+          console.log('entrou');
+        }
+
         await saveCartItems({
           productId: selectedProducts[i].productId,
           quantity: selectedProducts[i].quantity,
@@ -60,12 +69,24 @@ export default function SignIn() {
     }
   }
 
+  function formatUserProducts(userProducts: { productId: string }[]) {
+    return userProducts.map((product) => product.productId);
+  }
+
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
       setIsLoading(true);
       const { data } = await axios.post('/api/auth/sign-in', formData);
       setUser({ email: data.email, name: data.name });
-      saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email);
+
+      const [userProducts] = await getProductsByUserEmail(data.email);
+
+      let formattedUserProducts: string[] = [];
+      if (userProducts && userProducts.items && userProducts.items.length > 0) {
+        formattedUserProducts = formatUserProducts(userProducts.items);
+      }
+
+      await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email, formattedUserProducts);
 
       router.push('/');
     } catch {
