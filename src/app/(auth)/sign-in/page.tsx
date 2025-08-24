@@ -56,15 +56,13 @@ export default function SignIn() {
       // TODO: We also need to check if this product was already added in database for this user.
       // If so, avoid to save it again.
       if (!selectedProducts[i].wasAddedByAuthenticatedUser) {
-        if (userProducts.includes(selectedProducts[i].productId)) {
-          console.log('entrou');
+        if (!userProducts.includes(selectedProducts[i].productId)) {
+          await saveCartItems({
+            productId: selectedProducts[i].productId,
+            quantity: selectedProducts[i].quantity,
+            userEmail,
+          });
         }
-
-        await saveCartItems({
-          productId: selectedProducts[i].productId,
-          quantity: selectedProducts[i].quantity,
-          userEmail,
-        });
       }
     }
   }

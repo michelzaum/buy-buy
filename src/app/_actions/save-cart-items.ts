@@ -36,6 +36,12 @@ export async function saveCartItems({ productId, quantity, userEmail }: SaveCart
     },
   });
 
+  // Next steps:
+  // - Load cart items when login (if user has items)
+  // - Check the accessToken before save cart items in database
+  // - Save selected products to add in cart in the store when user tries to add them in the cart,
+  // So when they login and are redirected to the app, we save the cart information in database.
+
   if (userCart) {
     userCartId = userCart.id;
   }
