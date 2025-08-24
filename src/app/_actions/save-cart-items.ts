@@ -41,11 +41,6 @@ export async function saveCartItems({ productId, quantity, userEmail }: SaveCart
   // - Check the accessToken before save cart items in database
   // - Save selected products to add in cart in the store when user tries to add them in the cart,
   // So when they login and are redirected to the app, we save the cart information in database.
-
-  if (userCart) {
-    userCartId = userCart.id;
-  }
-
   if (!userCart) {
     const createdUserCart = await db.cart.create({
       data: {
@@ -54,6 +49,25 @@ export async function saveCartItems({ productId, quantity, userEmail }: SaveCart
     });
 
     userCartId = createdUserCart.id;
+  }
+
+  if (userCart) {
+    userCartId = userCart.id;
+
+    const cartItem = await db.cartItem.findFirst({
+      where: { productId },
+    });
+
+    if (cartItem?.id) {
+      return db.cartItem.update({
+        data: {
+          quantity: cartItem.quantity + quantity,
+        },
+        where: {
+          id: cartItem.id,
+        },
+      });
+    }
   }
 
   return await db.cartItem.create({
