@@ -50,15 +50,40 @@ export default function SignIn() {
     wasAddedByAuthenticatedUser?: boolean;
   }[],
   userEmail: string,
-  userProducts: string[],
+  userProducts?: {
+    productId: string;
+    quantity: number;
+  }[],
 ) {
+    const userProductsIds = formatUserProducts(userProducts ?? []);
+
     for (let i = 0; selectedProducts.length > i; i++) {
+      let userProductIndex = 0;
+      if (userProducts && userProducts?.length > 0) {
+        userProductIndex = userProducts.findIndex(
+          (product) => product.productId === selectedProducts[i].productId,
+        );
+      }
+
       if (!selectedProducts[i].wasAddedByAuthenticatedUser) {
-        await saveCartItems({
-          productId: selectedProducts[i].productId,
-          quantity: selectedProducts[i].quantity,
-          userEmail,
-        });
+        if (userProductsIds.length > 0 && userProductsIds.includes(selectedProducts[i].productId)) {
+
+          if (!!(userProductIndex > -1 && userProducts?.length && userProducts.length > 0)) {
+            const finalQuantity = selectedProducts[i].quantity - userProducts[userProductIndex].quantity;
+
+            await saveCartItems({
+              productId: selectedProducts[i].productId,
+              quantity: finalQuantity,
+              userEmail,
+            });
+          }
+        } else {
+          await saveCartItems({
+            productId: selectedProducts[i].productId,
+            quantity: selectedProducts[i].quantity,
+            userEmail,
+          });
+        }
       }
     }
   }
@@ -73,14 +98,16 @@ export default function SignIn() {
       const { data } = await axios.post('/api/auth/sign-in', formData);
       setUser({ email: data.email, name: data.name });
 
-      const [userProducts] = await getProductsByUserEmail(data.email);
+      const userProducts = await getProductsByUserEmail(data.email);
 
-      let formattedUserProducts: string[] = [];
-      if (userProducts && userProducts.items && userProducts.items.length > 0) {
-        formattedUserProducts = formatUserProducts(userProducts.items);
+      if (userProducts) {
+        const [productItems] = userProducts;
+        if (productItems && productItems.items && productItems.items.length > 0) {
+          await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email, productItems.items);
+        } else {
+          await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email);
+        }
       }
-
-      await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email, formattedUserProducts);
 
       router.push('/');
     } catch {
