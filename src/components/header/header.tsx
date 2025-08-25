@@ -15,8 +15,12 @@ export function Header() {
 
   async function handleSignOut(): Promise<void> {
     await axios.post('/api/auth/sign-out');
-    navigateToSignInPage();
+    navigateToHomePage();
     setUser(undefined);
+  }
+
+  function navigateToHomePage(): void {
+    router.replace('/');
   }
 
   function navigateToSignInPage(): void {

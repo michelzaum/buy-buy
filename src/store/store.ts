@@ -3,8 +3,9 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type CartItem = {
-  productId: string,
-  quantity: number,
+  productId: string;
+  quantity: number;
+  wasAddedByAuthenticatedUser?: boolean;
 }
 
 type BasicUserInfo = {
@@ -30,17 +31,18 @@ export const useStore = create<Store & Actions>()(
     persist(
       immer((set) => ({
         selectedProducts: [],
-        setSelectedProduct: ({ productId, quantity }: CartItem) => set(({ selectedProducts }) => {
+        setSelectedProduct: ({ productId, quantity, wasAddedByAuthenticatedUser }: CartItem) => set(({ selectedProducts }) => {
           const alreadySelectedProductIndex = selectedProducts.findIndex(
             (item) => item.productId === productId
           );
 
           if (alreadySelectedProductIndex >= 0) {
             selectedProducts[alreadySelectedProductIndex].quantity += quantity;
+            selectedProducts[alreadySelectedProductIndex].wasAddedByAuthenticatedUser = wasAddedByAuthenticatedUser;
             return;
           }
 
-          selectedProducts.push({ productId, quantity });
+          selectedProducts.push({ productId, quantity, wasAddedByAuthenticatedUser });
         }),
         removeProduct: (productId: string) => set(({ selectedProducts }) => ({
           selectedProducts: selectedProducts.filter((product) => product.productId !== productId),
