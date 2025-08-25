@@ -21,6 +21,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useStore } from "@/store/store";
+import { saveCartItems } from "@/app/_actions/save-cart-items";
+import { getProductsByUserEmail } from "@/app/_actions/get-product-by-user-email";
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -39,16 +41,74 @@ export default function SignIn() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useStore();
+  const { setUser, selectedProducts } = useStore();
+
+  async function saveCartItemsByNotAuthenticaedUser(selectedProducts: {
+    // TODO: create a type for these props
+    productId: string;
+    quantity: number;
+    wasAddedByAuthenticatedUser?: boolean;
+  }[],
+  userEmail: string,
+  userProducts?: {
+    productId: string;
+    quantity: number;
+  }[],
+) {
+    const userProductsIds = formatUserProducts(userProducts ?? []);
+
+    for (let i = 0; selectedProducts.length > i; i++) {
+      let userProductIndex = 0;
+      if (userProducts && userProducts?.length > 0) {
+        userProductIndex = userProducts.findIndex(
+          (product) => product.productId === selectedProducts[i].productId,
+        );
+      }
+
+      if (!selectedProducts[i].wasAddedByAuthenticatedUser) {
+        if (userProductsIds.length > 0 && userProductsIds.includes(selectedProducts[i].productId)) {
+
+          if (!!(userProductIndex > -1 && userProducts?.length && userProducts.length > 0)) {
+            const finalQuantity = selectedProducts[i].quantity - userProducts[userProductIndex].quantity;
+
+            await saveCartItems({
+              productId: selectedProducts[i].productId,
+              quantity: finalQuantity,
+              userEmail,
+            });
+          }
+        } else {
+          await saveCartItems({
+            productId: selectedProducts[i].productId,
+            quantity: selectedProducts[i].quantity,
+            userEmail,
+          });
+        }
+      }
+    }
+  }
+
+  function formatUserProducts(userProducts: { productId: string }[]) {
+    return userProducts.map((product) => product.productId);
+  }
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     try {
       setIsLoading(true);
       const { data } = await axios.post('/api/auth/sign-in', formData);
-      setUser({
-        email: data.email,
-        name: data.name,
-      });
+      setUser({ email: data.email, name: data.name });
+
+      const userProducts = await getProductsByUserEmail(data.email);
+
+      if (userProducts) {
+        const [productItems] = userProducts;
+        if (productItems && productItems.items && productItems.items.length > 0) {
+          await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email, productItems.items);
+        } else {
+          await saveCartItemsByNotAuthenticaedUser(selectedProducts, data.email);
+        }
+      }
+
       router.push('/');
     } catch {
       toast.error('Credenciais inválidas');
