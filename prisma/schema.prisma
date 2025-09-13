@@ -59,6 +59,6 @@ model CartItem {
   productId String
   quantity  Int
 
-  cart    Cart    @relation(fields: [cartId], references: [id])
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: NoAction)
   product Product @relation(fields: [productId], references: [id])
 }
