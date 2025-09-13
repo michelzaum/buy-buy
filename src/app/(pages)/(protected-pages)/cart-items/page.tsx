@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header/header";
+import { deleteAllCartItems } from "@/app/_actions/deleteAllCartItems";
 
 interface CardCartItem extends Product {
   quantity: number;
@@ -38,7 +39,7 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -81,10 +82,11 @@ export default function CartItems() {
     });
   }
 
-  function handleDeleteAllItemsFromCart(): void {
+  async function handleDeleteAllItemsFromCart(): Promise<void> {
     setCartItems([]);
     removeAllProducts();
     setIsDeleteAllItemsFromCartModalOpen(false);
+    await deleteAllCartItems(user?.email || '');
 
     toast.success('Produtos excluído do carrinho', {
       style: {
