@@ -45,9 +45,7 @@ export default function CartItems() {
 
   useEffect(() => {
     const cartItems = async () => {
-      const response = await getCartItems({
-        prodcutIds: selectedProducts.map(product => product?.productId),
-      });
+      const response = await getCartItems();
 
       if (response instanceof Array) {
         const cartList = response.map((responseItem) => ({

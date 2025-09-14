@@ -4,11 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-interface CartItemsProps {
-  prodcutIds: string[];
-}
-
-export async function getCartItems({ prodcutIds }: CartItemsProps) {
+export async function getCartItems() {
   const user = await auth();
 
   if (!user) {
@@ -19,12 +15,17 @@ export async function getCartItems({ prodcutIds }: CartItemsProps) {
     });
   }
 
-  return await db.product.findMany({
+  return await db.cart.findUnique({
     where: {
-      id: {
-        in: [
-          ...prodcutIds,
-        ],
+      userId: user.id,
+    },
+    select: {
+      items: {
+        select: {
+          product: true,
+          quantity: true,
+          productId: false,
+        },
       },
     },
   });
