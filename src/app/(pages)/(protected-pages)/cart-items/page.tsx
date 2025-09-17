@@ -31,6 +31,7 @@ import { Header } from "@/components/header/header";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 
 interface CardCartItem {
+  id: string;
   product: Product
   quantity: number;
 }

@@ -17,6 +17,7 @@ export async function getCartItems() {
     select: {
       items: {
         select: {
+          id: true,
           product: true,
           quantity: true,
           productId: false,
