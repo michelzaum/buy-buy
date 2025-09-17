@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header/header";
-import { deleteAllCartItems } from "@/app/_actions/deleteAllCartItems";
+import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 
 interface CardCartItem {
   product: Product
