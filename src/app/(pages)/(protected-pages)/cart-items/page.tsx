@@ -29,6 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header/header";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
+import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 
 interface CardCartItem {
   id: string;
@@ -61,7 +62,9 @@ export default function CartItems() {
     return products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   }
 
-  function handleDeleteItemFromCart(productId: string): void {
+  async function handleDeleteItemFromCart(productId: string): Promise<void> {
+    await deleteCartItem(productId);
+
     const updatedList = cartItems.filter((item) => item.product.id !== productId);
     setCartItems(updatedList);
     removeProduct(productId);
