@@ -28,8 +28,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header/header";
+import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
+import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 
-interface CardCartItem extends Product {
+interface CardCartItem {
+  id: string;
+  product: Product
   quantity: number;
 }
 
@@ -38,23 +42,16 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct, removeAllProducts } = useStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
   useEffect(() => {
     const cartItems = async () => {
-      const response = await getCartItems({
-        prodcutIds: selectedProducts.map(product => product?.productId),
-      });
+      const response = await getCartItems();
 
-      if (response instanceof Array) {
-        const cartList = response.map((responseItem) => ({
-          ...responseItem,
-          quantity: selectedProducts.find((product) => product.productId === responseItem.id)?.quantity || 1,
-        }));
-
-        setCartItems(cartList);
+      if (response && response.items) {
+        setCartItems(response.items)
       }
     }
 
@@ -62,11 +59,13 @@ export default function CartItems() {
   }, []);
 
   function getTotalPrice(products: CardCartItem[]): number {
-    return products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    return products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   }
 
-  function handleDeleteItemFromCart(productId: string): void {
-    const updatedList = cartItems.filter((item) => item.id !== productId);
+  async function handleDeleteItemFromCart(productId: string): Promise<void> {
+    await deleteCartItem(productId);
+
+    const updatedList = cartItems.filter((item) => item.product.id !== productId);
     setCartItems(updatedList);
     removeProduct(productId);
     setIsDeleteItemFromCartModalOpen(false);
@@ -81,10 +80,11 @@ export default function CartItems() {
     });
   }
 
-  function handleDeleteAllItemsFromCart(): void {
+  async function handleDeleteAllItemsFromCart(): Promise<void> {
     setCartItems([]);
     removeAllProducts();
     setIsDeleteAllItemsFromCartModalOpen(false);
+    await deleteAllCartItems(user?.email || '');
 
     toast.success('Produtos excluído do carrinho', {
       style: {
@@ -98,8 +98,8 @@ export default function CartItems() {
 
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
     setCartItems((prevState) => {
-      return prevState.map((product) =>
-          product.id === productId ? {...product, quantity: quantity } : product,
+      return prevState.map((item) =>
+          item.product.id === productId ? {...item, quantity: quantity } : item,
       );
     });
 
@@ -125,34 +125,34 @@ export default function CartItems() {
           </div>
         )}
         {cartItems.length > 0 ? cartItems.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
+          <div key={item.product.id} className="flex items-center justify-between p-2 rounded-lg border border-gray-300 relative">
             <button
               className="bg-gray-50 shadow-md p-2 rounded-full absolute -top-6 -left-4 z-10 hover:bg-red-400 hover:cursor-pointer transition-colors duration-75 ease-in-out"
-              onClick={() => handleOpenDeleteItemFromCartModal(item.id)}
+              onClick={() => handleOpenDeleteItemFromCartModal(item.product.id)}
             >
               <Trash2 />
             </button>
             <div className="flex items-center gap-3">
               <div className="h-20 w-20 relative">
                 <Image
-                  src={item.imageUrl}
+                  src={item.product.imageUrl}
                   alt="Product image"
                   fill
                   className="rounded-lg object-cover"
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <strong>{item.name}</strong>
-                <span>{formatCurrency(item.price * item.quantity)}</span>
+                <strong>{item.product.name}</strong>
+                <span>{formatCurrency(item.product.price * item.quantity)}</span>
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs">Valor unitário: {formatCurrency(item.price)}</span>
+                  <span className="text-xs">Valor unitário: {formatCurrency(item.product.price)}</span>
                 </div>
               </div>
             </div>
             <div>
               <Select
                 defaultValue={`${item.quantity}`}
-                onValueChange={(value) => handleUpdateProductQuantity(item.id, Number(value))}
+                onValueChange={(value) => handleUpdateProductQuantity(item.product.id, Number(value))}
               >
                 <SelectTrigger className="pr-1 hover:cursor-pointer">
                   <SelectValue placeholder='Selecione a quantidade' />

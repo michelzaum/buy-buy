@@ -2,29 +2,26 @@
 
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
 
-interface CartItemsProps {
-  prodcutIds: string[];
-}
-
-export async function getCartItems({ prodcutIds }: CartItemsProps) {
+export async function getCartItems() {
   const user = await auth();
 
   if (!user) {
-    return NextResponse.json({
-      error: 'Unauthorized',
-    }, {
-      status: 401,
-    });
+    throw new Error('Unauthorized');
   }
 
-  return await db.product.findMany({
+  return await db.cart.findUnique({
     where: {
-      id: {
-        in: [
-          ...prodcutIds,
-        ],
+      userId: user.id,
+    },
+    select: {
+      items: {
+        select: {
+          id: true,
+          product: true,
+          quantity: true,
+          productId: false,
+        },
       },
     },
   });
