@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header/header";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 import { deleteCartItem } from "@/app/_actions/delete-cart-item";
+import { handleCheckout } from "@/app/_actions/checkout";
 
 interface CardCartItem {
   id: string;
@@ -186,7 +187,21 @@ export default function CartItems() {
               <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
             </div>
             <div className="w-full py-4 flex justify-end">
-              <Button className="w-full py-8 sm:w-1/2 hover:cursor-pointer">
+              <Button
+                className="w-full py-8 sm:w-1/2 hover:cursor-pointer"
+                onClick={() => handleCheckout([
+                  {
+                    name: "Notebook Lenovo",
+                    price: 299,
+                    quantity: 2
+                  },
+                  {
+                    name: "Smartphone Samsung",
+                    price: 399,
+                    quantity: 1
+                  }
+                ])}
+              >
                 <span className="font-semibold text-lg">Continuar</span>
               </Button>
             </div>
