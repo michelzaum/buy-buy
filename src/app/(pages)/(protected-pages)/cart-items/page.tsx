@@ -31,6 +31,7 @@ import { Header } from "@/components/header/header";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 import { handleCheckout } from "@/app/_actions/checkout";
+import { getProductById } from "@/app/_actions/get-product-by-id";
 
 interface CardCartItem {
   id: string;
@@ -95,6 +96,19 @@ export default function CartItems() {
         fontWeight: 500,
       },
     });
+  }
+
+  async function onCheckout(): Promise<void> {
+    const productIds = selectedProducts.map((product) => product.productId);
+    const productsToCheckout = await getProductById(productIds);
+    
+    const formattedProductToCheckout = productsToCheckout.map((product, index) => ({
+      name: product.name,
+      price: product.price,
+      quantity: product.cartItems[0].quantity,
+    }));
+
+    await handleCheckout(formattedProductToCheckout);
   }
 
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
@@ -189,18 +203,7 @@ export default function CartItems() {
             <div className="w-full py-4 flex justify-end">
               <Button
                 className="w-full py-8 sm:w-1/2 hover:cursor-pointer"
-                onClick={() => handleCheckout([
-                  {
-                    name: "Notebook Lenovo",
-                    price: 299,
-                    quantity: 2
-                  },
-                  {
-                    name: "Smartphone Samsung",
-                    price: 399,
-                    quantity: 1
-                  }
-                ])}
+                onClick={onCheckout}
               >
                 <span className="font-semibold text-lg">Continuar</span>
               </Button>
