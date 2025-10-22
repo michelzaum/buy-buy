@@ -16,6 +16,7 @@ type BasicUserInfo = {
 type Store = {
   selectedProducts: CartItem[];
   user: BasicUserInfo | undefined;
+  categoryToFilterBy: string;
 };
 
 type Actions = {
@@ -24,6 +25,7 @@ type Actions = {
   updateProduct: (productId: string, quantity: number) => void;
   removeAllProducts: () => void;
   setUser: (user?: BasicUserInfo) => void;
+  setCategoryToFilterBy: (category: string) => void;
 };
 
 export const useStore = create<Store & Actions>()(
@@ -60,6 +62,10 @@ export const useStore = create<Store & Actions>()(
         user: undefined,
         setUser: (userData?: BasicUserInfo) => set(() => ({
           user: userData,
+        })),
+        categoryToFilterBy: '',
+        setCategoryToFilterBy: (category: string) => set(() => ({
+          categoryToFilterBy: category,
         })),
       })),
       {
