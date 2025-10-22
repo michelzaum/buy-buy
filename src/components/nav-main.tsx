@@ -35,7 +35,7 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const { setCategoryToFilterBy } = useStore();
+  const { setCategoryToFilterBy, categoryToFilterBy } = useStore();
 
   return (
     <SidebarGroup>
@@ -72,9 +72,23 @@ export function NavMain({
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <button className="hover:cursor-pointer w-full" onClick={() => setCategoryToFilterBy(subItem.title || '')}>
-                              <span>{subItem.title}</span>
-                            </button>
+                            <div className="flex items-center">
+                              <button
+                                className="w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer disabled:opacity-60"
+                                onClick={() => setCategoryToFilterBy(subItem.title || '')}
+                                disabled={categoryToFilterBy === subItem.title}
+                              >
+                                <span>{subItem.title}</span>
+                              </button>
+                              {categoryToFilterBy === subItem.title && (
+                                <button
+                                  onClick={() => setCategoryToFilterBy('')}
+                                  className="flex-1 hover:cursor-pointer"
+                                >
+                                  X
+                                </button>
+                              )}
+                            </div>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       );
