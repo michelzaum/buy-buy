@@ -29,7 +29,7 @@ export function NavMain({
     isActive?: boolean;
     items?: {
       title?: string;
-      url?: string;
+      key?: string;
       Component?: React.ReactNode;
     }[];
   }[];
