@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { Category, Product } from "@prisma/client";
 
 import { ProductItem } from "./product-item";
@@ -16,7 +16,6 @@ interface ProductListProps {
 }
 
 export function ProductList({ products, isSuggestedProduct }: ProductListProps) {
-  const [filteredProducts, setFilteredProducts] = useState<ListProducts[]>(products);
   const { categoryToFilterBy } = useStore();
 
   if (products.length === 0) {
@@ -27,16 +26,13 @@ export function ProductList({ products, isSuggestedProduct }: ProductListProps) 
     );
   }
 
-  function handleProductFilter(): void {
-    if (categoryToFilterBy) {
-      const filteredProducts = products.filter(product => product.category.name === categoryToFilterBy);
-      setFilteredProducts(filteredProducts)
+  const filteredProducts = useMemo(() => {
+    if (!categoryToFilterBy) {
+      return products;
     }
-  }
 
-  useEffect(() => {
-    handleProductFilter();
-  }, [categoryToFilterBy]);
+    return products.filter(p => p.category.name === categoryToFilterBy);
+  }, [products, categoryToFilterBy]);
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
