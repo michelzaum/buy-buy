@@ -69,9 +69,9 @@ export function NavMain({
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
+                            <button className="hover:cursor-pointer w-full">
                               <span>{subItem.title}</span>
-                            </a>
+                            </button>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       );
