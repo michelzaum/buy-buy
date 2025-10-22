@@ -1,16 +1,14 @@
-import { Prisma } from "@prisma/client";
+'use client';
+
+import { Category, Product } from "@prisma/client";
 import { ProductItem } from "./product-item";
 
+interface ListProducts extends Product {
+ category: Pick<Category, 'name'>;
+}
+
 interface ProductListProps {
-  products: Prisma.ProductGetPayload<{
-    include: {
-      category: {
-        select: {
-          name: true;
-        };
-      };
-    };
-  }>[];
+  products: ListProducts[];
   isSuggestedProduct?: boolean;
 }
 
