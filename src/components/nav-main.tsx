@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useStore } from "@/store/store";
 
 export function NavMain({
   items,
@@ -34,6 +35,8 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const { setCategoryToFilterBy } = useStore();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Filtros</SidebarGroupLabel>
@@ -69,7 +72,7 @@ export function NavMain({
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <button className="hover:cursor-pointer w-full">
+                            <button className="hover:cursor-pointer w-full" onClick={() => setCategoryToFilterBy(subItem.title || '')}>
                               <span>{subItem.title}</span>
                             </button>
                           </SidebarMenuSubButton>

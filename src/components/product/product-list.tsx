@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Category, Product } from "@prisma/client";
 
 import { ProductItem } from "./product-item";
+import { useStore } from "@/store/store";
 
 interface ListProducts extends Product {
  category: Pick<Category, 'name'>;
@@ -16,6 +17,7 @@ interface ProductListProps {
 
 export function ProductList({ products, isSuggestedProduct }: ProductListProps) {
   const [filteredProducts, setFilteredProducts] = useState<ListProducts[]>(products);
+  const { categoryToFilterBy } = useStore();
 
   if (products.length === 0) {
     return (
@@ -25,18 +27,16 @@ export function ProductList({ products, isSuggestedProduct }: ProductListProps) 
     );
   }
 
-  const filter = '';
-
   function handleProductFilter(): void {
-    if (filter) {
-      const filteredProducts = products.filter(product => product.category.name === filter);
+    if (categoryToFilterBy) {
+      const filteredProducts = products.filter(product => product.category.name === categoryToFilterBy);
       setFilteredProducts(filteredProducts)
     }
   }
 
   useEffect(() => {
     handleProductFilter();
-  }, [filter]);
+  }, [categoryToFilterBy]);
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
