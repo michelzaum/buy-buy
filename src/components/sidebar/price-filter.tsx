@@ -4,14 +4,23 @@ import { useRef } from 'react';
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useStore } from '@/store/store';
 
 export function PriceFilter() {
+  const { setFilterByPrice } = useStore();
+
   const minPriceRef = useRef<HTMLInputElement>(null);
   const maxPriceRef = useRef<HTMLInputElement>(null);
 
   function handleApplyFilter(): void {
-    console.log('Min Price:', minPriceRef.current?.value);
-    console.log('Max Price:', maxPriceRef.current?.value);
+    const minPrice = minPriceRef.current?.value;
+    const maxPrice = maxPriceRef.current?.value;
+
+    if (!minPrice && !maxPrice) {
+      return;
+    }
+
+    setFilterByPrice(Number(minPrice), Number(maxPrice));
   }
 
   return (
