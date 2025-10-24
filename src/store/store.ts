@@ -17,6 +17,10 @@ type Store = {
   selectedProducts: CartItem[];
   user: BasicUserInfo | undefined;
   categoryToFilterBy: string;
+  filterByprice: {
+    min: number;
+    max: number;
+  };
 };
 
 type Actions = {
@@ -26,6 +30,7 @@ type Actions = {
   removeAllProducts: () => void;
   setUser: (user?: BasicUserInfo) => void;
   setCategoryToFilterBy: (category: string) => void;
+  setFilterByPrice: (min: number, max: number) => void;
 };
 
 export const useStore = create<Store & Actions>()(
@@ -66,6 +71,16 @@ export const useStore = create<Store & Actions>()(
         categoryToFilterBy: '',
         setCategoryToFilterBy: (category: string) => set(() => ({
           categoryToFilterBy: category,
+        })),
+        filterByprice: {
+          min: 0,
+          max: 10000,
+        },
+        setFilterByPrice: (min: number, max: number) => set(() => ({
+          filterByprice: {
+            min,
+            max,
+          },
         })),
       })),
       {
