@@ -44,6 +44,15 @@ export function NavMain({
     setFilteredProducts(filteredProducts);
   }
 
+  function handleSelectedCategory(category: string): void {
+    if (category === productFilter.category) {
+      setProductFilter({ ...productFilter, category: '' });
+      return;
+    }
+
+    setProductFilter({ ...productFilter, category });
+  }
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Filtros</SidebarGroupLabel>
@@ -84,7 +93,7 @@ export function NavMain({
                                 className={`
                                   w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer p-3 border border-transparent rounded-md ${subItem.title ===productFilter.category && 'bg-gray-200'}
                                 `}
-                                onClick={() => setProductFilter({ ...productFilter, category: subItem.title || '' })}
+                                onClick={() => handleSelectedCategory(subItem.title || '')}
                               >
                                 <span>{subItem.title}</span>
                               </button>
