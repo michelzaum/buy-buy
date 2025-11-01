@@ -18,7 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useStore } from "@/store/store";
+import { Button } from "./ui/button";
 
 export function NavMain({
   items,
@@ -35,7 +35,7 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const { setCategoryToFilterBy, categoryToFilterBy } = useStore();
+  function handleApplyFilter() {}
 
   return (
     <SidebarGroup>
@@ -75,19 +75,9 @@ export function NavMain({
                             <div className="flex items-center">
                               <button
                                 className="w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer disabled:opacity-60"
-                                onClick={() => setCategoryToFilterBy(subItem.title || '')}
-                                disabled={categoryToFilterBy === subItem.title}
                               >
                                 <span>{subItem.title}</span>
                               </button>
-                              {categoryToFilterBy === subItem.title && (
-                                <button
-                                  onClick={() => setCategoryToFilterBy('')}
-                                  className="flex-1 hover:cursor-pointer"
-                                >
-                                  X
-                                </button>
-                              )}
                             </div>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -99,6 +89,7 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
+        <Button className="hover:cursor-pointer mt-6" onClick={handleApplyFilter}>Aplicar</Button>
       </SidebarMenu>
     </SidebarGroup>
   );
