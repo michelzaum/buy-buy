@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 import { useStore } from "@/store/store";
+import { getFilteredProducts } from "@/app/_actions/get-filtered-products";
 
 export function NavMain({
   items,
@@ -36,9 +37,12 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const { setProductFilter, productFilter } = useStore();
+  const { setProductFilter, productFilter, setFilteredProducts } = useStore();
 
-  function handleApplyFilter() {}
+  async function handleApplyFilter() {
+    const filteredProducts = await getFilteredProducts({ ...productFilter });
+    setFilteredProducts(filteredProducts);
+  }
 
   return (
     <SidebarGroup>
