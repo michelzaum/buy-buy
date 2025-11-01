@@ -1,3 +1,4 @@
+import { Category, Product } from "@prisma/client";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -13,14 +14,23 @@ type BasicUserInfo = {
   name: string;
 };
 
-type Store = {
-  selectedProducts: CartItem[];
-  user: BasicUserInfo | undefined;
-  categoryToFilterBy: string;
-  filterByprice: {
+type ProductFilter = {
+  category: string;
+  price: {
     min: number;
     max: number;
   };
+};
+
+interface ListProducts extends Product {
+ category: Pick<Category, 'name'>;
+}
+
+type Store = {
+  selectedProducts: CartItem[];
+  user: BasicUserInfo | undefined;
+  productFilter: ProductFilter;
+  filteredProducts: ListProducts[];
 };
 
 type Actions = {
@@ -29,14 +39,14 @@ type Actions = {
   updateProduct: (productId: string, quantity: number) => void;
   removeAllProducts: () => void;
   setUser: (user?: BasicUserInfo) => void;
-  setCategoryToFilterBy: (category: string) => void;
-  setFilterByPrice: (min: number, max: number) => void;
+  setProductFilter: (productFilter: Partial<ProductFilter>) => void;
+  setFilteredProducts: (filteredProducts: ListProducts[]) => void;
 };
 
 export const useStore = create<Store & Actions>()(
   devtools(
     persist(
-      immer((set) => ({
+      immer((set,) => ({
         selectedProducts: [],
         setSelectedProduct: ({ productId, quantity, wasAddedByAuthenticatedUser }: CartItem) => set(({ selectedProducts }) => {
           const alreadySelectedProductIndex = selectedProducts.findIndex(
@@ -68,19 +78,22 @@ export const useStore = create<Store & Actions>()(
         setUser: (userData?: BasicUserInfo) => set(() => ({
           user: userData,
         })),
-        categoryToFilterBy: '',
-        setCategoryToFilterBy: (category: string) => set(() => ({
-          categoryToFilterBy: category,
-        })),
-        filterByprice: {
-          min: 0,
-          max: 10000,
-        },
-        setFilterByPrice: (min: number, max: number) => set(() => ({
-          filterByprice: {
-            min,
-            max,
+        productFilter: {
+          category: "",
+          price: {
+            min: 0,
+            max: Infinity,
           },
+        },
+        setProductFilter: (productFilter: Partial<ProductFilter>) => set((prevState) => ({
+          productFilter: {
+            ...prevState.productFilter,
+            ...productFilter,
+          },          
+        })),
+        filteredProducts: [],
+        setFilteredProducts: (filteredProducts: ListProducts[]) => set(() => ({
+          filteredProducts,
         })),
       })),
       {
