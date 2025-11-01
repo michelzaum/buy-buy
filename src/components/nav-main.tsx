@@ -81,7 +81,9 @@ export function NavMain({
                           <SidebarMenuSubButton asChild>
                             <div className="flex items-center">
                               <button
-                                className="w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer disabled:opacity-60"
+                                className={`
+                                  w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer p-3 border border-transparent rounded-md ${subItem.title ===productFilter.category && 'bg-gray-200'}
+                                `}
                                 onClick={() => setProductFilter({ ...productFilter, category: subItem.title || '' })}
                               >
                                 <span>{subItem.title}</span>
