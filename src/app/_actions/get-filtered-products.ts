@@ -19,7 +19,7 @@ export async function getFilteredProducts(filter: GetFilteredProductsParams) {
         lte: filter.price.max ? filter.price.max : MAX_PRODUCT_PRICE,
       },
       category: {
-        name: filter.category,
+        name: filter.category ? filter.category : { not: '' },
       },
     },
     include: {
