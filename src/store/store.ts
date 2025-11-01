@@ -1,7 +1,10 @@
 import { Category, Product } from "@prisma/client";
+
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
+
+import { MAX_PRODUCT_PRICE, MIN_PRODUCT_PRICE } from "@/utils/constants";
 
 type CartItem = {
   productId: string;
@@ -81,8 +84,8 @@ export const useStore = create<Store & Actions>()(
         productFilter: {
           category: "",
           price: {
-            min: 0,
-            max: Infinity,
+            min: MIN_PRODUCT_PRICE,
+            max: MAX_PRODUCT_PRICE,
           },
         },
         setProductFilter: (productFilter: Partial<ProductFilter>) => set((prevState) => ({
