@@ -21,5 +21,12 @@ export async function getFilteredProducts(filter: GetFilteredProductsParams) {
         name: filter.category,
       },
     },
+    include: {
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 }
