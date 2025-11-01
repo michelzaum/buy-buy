@@ -19,6 +19,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
+import { useStore } from "@/store/store";
 
 export function NavMain({
   items,
@@ -35,6 +36,8 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const { setProductFilter, productFilter } = useStore();
+
   function handleApplyFilter() {}
 
   return (
@@ -75,6 +78,7 @@ export function NavMain({
                             <div className="flex items-center">
                               <button
                                 className="w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer disabled:opacity-60"
+                                onClick={() => setProductFilter({ ...productFilter, category: subItem.title || '' })}
                               >
                                 <span>{subItem.title}</span>
                               </button>
