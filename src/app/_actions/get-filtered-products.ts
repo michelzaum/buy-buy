@@ -6,8 +6,8 @@ import { MAX_PRODUCT_PRICE, MIN_PRODUCT_PRICE } from "@/utils/constants";
 interface GetFilteredProductsParams {
   category: string;
   price: {
-    min: number;
-    max: number;
+    min?: number;
+    max?: number;
   };
 }
 
