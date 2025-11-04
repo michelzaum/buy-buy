@@ -32,9 +32,15 @@ export function ProductList({ products, isSuggestedProduct }: ProductListProps) 
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
-      {filteredProducts.map((product) => (
-        <ProductItem isSuggestedProduct={isSuggestedProduct} key={product.id} product={product} />
-      ))}
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <ProductItem isSuggestedProduct={isSuggestedProduct} key={product.id} product={product} />
+        ))
+      ) : (
+        <div className="flex flex-col gap-4 px-1 py-4 md:flex-row md:flex-wrap md:gap-8">
+          <span>Nenhum produto encontrado para esse filtro.</span>
+        </div>
+      )}
     </div>
   );
 }
