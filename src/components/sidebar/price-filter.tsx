@@ -1,10 +1,25 @@
 'use client';
 
+import { ChangeEvent } from "react";
 import { Input } from "../ui/input";
 import { useStore } from '@/store/store';
 
 export function PriceFilter() {
   const { setProductFilter, productFilter } = useStore();
+
+    function handlePriceValue(event: ChangeEvent<HTMLInputElement>, key: 'min' | 'max'): void {
+    const result = event.target.value.replace(/\D/g, '');
+
+    setProductFilter(
+      {
+        ...productFilter,
+        price: {
+          ...productFilter.price,
+          [key]: Number(result),
+        },
+      }
+    )
+  }
 
   return (
     <div className="flex flex-col gap-4 py-4">
@@ -15,16 +30,9 @@ export function PriceFilter() {
         <Input
           id="minPrice"
           placeholder="Ex: 25,00"
-          defaultValue={productFilter.price.min}
-          onChange={(e) => setProductFilter(
-          {
-            ...productFilter,
-            price: {
-              min: Number(e.target.value),
-              max: productFilter.price.max,
-            }
-          }
-        )} />
+          value={productFilter.price.min}
+          onChange={(e) => handlePriceValue(e, 'min')}
+        />
       </div>
       <div className="flex flex-col gap-2">
         <label className="text-sm text-gray-900" htmlFor="maxPrice">
@@ -33,15 +41,8 @@ export function PriceFilter() {
         <Input
           id="maxPrice"
           placeholder="Ex: 1000,00"
-          onChange={(e) => setProductFilter(
-          {
-            ...productFilter,
-            price: {
-              min: productFilter.price.min,
-              max: Number(e.target.value),
-            },
-          }
-        )} />
+          value={productFilter.price.max}
+          onChange={(e) => handlePriceValue(e, 'max')} />
       </div>
     </div>
   );
