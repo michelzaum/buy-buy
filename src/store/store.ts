@@ -20,8 +20,8 @@ type BasicUserInfo = {
 type ProductFilter = {
   category: string;
   price: {
-    min: number;
-    max: number;
+    min?: number;
+    max?: number;
   };
 };
 
