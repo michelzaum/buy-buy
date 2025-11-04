@@ -1,13 +1,13 @@
 'use client';
 
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { Category, Product } from "@prisma/client";
 
 import { ProductItem } from "./product-item";
 import { useStore } from "@/store/store";
 
 interface ListProducts extends Product {
- category: Pick<Category, 'name'>;
+  category: Pick<Category, 'name'>;
 }
 
 interface ProductListProps {
@@ -16,7 +16,7 @@ interface ProductListProps {
 }
 
 export function ProductList({ products, isSuggestedProduct }: ProductListProps) {
-  const { categoryToFilterBy } = useStore();
+  const { setFilteredProducts, filteredProducts } = useStore();
 
   if (products.length === 0) {
     return (
@@ -26,19 +26,21 @@ export function ProductList({ products, isSuggestedProduct }: ProductListProps) 
     );
   }
 
-  const filteredProducts = useMemo(() => {
-    if (!categoryToFilterBy) {
-      return products;
-    }
-
-    return products.filter(p => p.category.name === categoryToFilterBy);
-  }, [products, categoryToFilterBy]);
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
-      {filteredProducts.map((product) => (
-        <ProductItem isSuggestedProduct={isSuggestedProduct} key={product.id} product={product} />
-      ))}
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <ProductItem isSuggestedProduct={isSuggestedProduct} key={product.id} product={product} />
+        ))
+      ) : (
+        <div className="flex flex-col gap-4 px-1 py-4 md:flex-row md:flex-wrap md:gap-8">
+          <span>Nenhum produto encontrado para esse filtro.</span>
+        </div>
+      )}
     </div>
   );
 }

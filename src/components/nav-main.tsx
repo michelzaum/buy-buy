@@ -17,8 +17,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
 import { useStore } from "@/store/store";
+import { getFilteredProducts } from "@/app/_actions/get-filtered-products";
 
 export function NavMain({
   items,
@@ -35,7 +38,22 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const { setCategoryToFilterBy, categoryToFilterBy } = useStore();
+  const { setProductFilter, productFilter, setFilteredProducts } = useStore();
+  const { state } = useSidebar();
+
+  async function handleApplyFilter() {
+    const filteredProducts = await getFilteredProducts({ ...productFilter });
+    setFilteredProducts(filteredProducts);
+  }
+
+  function handleSelectedCategory(category: string): void {
+    if (category === productFilter.category) {
+      setProductFilter({ ...productFilter, category: '' });
+      return;
+    }
+
+    setProductFilter({ ...productFilter, category });
+  }
 
   return (
     <SidebarGroup>
@@ -74,20 +92,13 @@ export function NavMain({
                           <SidebarMenuSubButton asChild>
                             <div className="flex items-center">
                               <button
-                                className="w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer disabled:opacity-60"
-                                onClick={() => setCategoryToFilterBy(subItem.title || '')}
-                                disabled={categoryToFilterBy === subItem.title}
+                                className={`
+                                  w-1/2 flex-2 flex items-center justify-between hover:cursor-pointer p-3 border border-transparent rounded-md ${subItem.title ===productFilter.category && 'bg-gray-200'}
+                                `}
+                                onClick={() => handleSelectedCategory(subItem.title || '')}
                               >
                                 <span>{subItem.title}</span>
                               </button>
-                              {categoryToFilterBy === subItem.title && (
-                                <button
-                                  onClick={() => setCategoryToFilterBy('')}
-                                  className="flex-1 hover:cursor-pointer"
-                                >
-                                  X
-                                </button>
-                              )}
                             </div>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -99,6 +110,9 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
+        {state === "expanded" && (
+          <Button className="hover:cursor-pointer mt-6" onClick={handleApplyFilter}>Aplicar</Button>
+        )}
       </SidebarMenu>
     </SidebarGroup>
   );
