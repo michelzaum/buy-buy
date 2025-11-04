@@ -30,15 +30,15 @@ const data = {
       items: [
         {
           title: "Eletrônicos",
-          url: "#",
+          key: "electronics",
         },
         {
           title: "Livros",
-          url: "#",
+          key: "books",
         },
         {
           title: "Roupas",
-          url: "#",
+          key: "clothes",
         },
       ],
     },
