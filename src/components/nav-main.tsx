@@ -17,6 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 import { useStore } from "@/store/store";
@@ -38,6 +39,7 @@ export function NavMain({
   }[];
 }) {
   const { setProductFilter, productFilter, setFilteredProducts } = useStore();
+  const { state } = useSidebar();
 
   async function handleApplyFilter() {
     const filteredProducts = await getFilteredProducts({ ...productFilter });
@@ -108,7 +110,9 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
-        <Button className="hover:cursor-pointer mt-6" onClick={handleApplyFilter}>Aplicar</Button>
+        {state === "expanded" && (
+          <Button className="hover:cursor-pointer mt-6" onClick={handleApplyFilter}>Aplicar</Button>
+        )}
       </SidebarMenu>
     </SidebarGroup>
   );
