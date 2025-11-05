@@ -147,9 +147,6 @@ export default function SignIn() {
                 <FormItem>
                   <div className="flex items-center">
                     <FormLabel>Senha</FormLabel>
-                    <Link href='#' className="ml-auto inline-block text-sm underline">
-                      Esqueceu sua senha?
-                    </Link>
                   </div>
                   <FormControl>
                     <Input placeholder="********" type="password" {...field} />
