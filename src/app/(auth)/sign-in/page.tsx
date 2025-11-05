@@ -169,9 +169,6 @@ export default function SignIn() {
                 </div>
                )}
               </Button>
-              <Button type="button" variant="outline" className="w-full">
-                Login with Google
-              </Button>
             </div>
           </form>
         </Form>
