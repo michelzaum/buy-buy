@@ -13,6 +13,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { PriceFilter } from "./price-filter";
+import { useStore } from "@/store/store";
 
 // This is sample data.
 const data = {
@@ -30,15 +31,15 @@ const data = {
       items: [
         {
           title: "Eletrônicos",
-          url: "#",
+          key: "electronics",
         },
         {
           title: "Livros",
-          url: "#",
+          key: "books",
         },
         {
           title: "Roupas",
-          url: "#",
+          key: "clothes",
         },
       ],
     },
@@ -58,6 +59,14 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useStore();
+
+  const userInfo = {
+    name: user?.name || '',
+    email: user?.email || '',
+    avatar: '',
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -68,9 +77,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      {user && (
+        <SidebarFooter>
+          <NavUser user={userInfo} />
+        </SidebarFooter>
+      )}
       <SidebarRail />
     </Sidebar>
   );
