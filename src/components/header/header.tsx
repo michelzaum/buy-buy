@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useStore } from "@/store/store";
+import { useEffect } from "react";
 
 interface HeaderProps {
   isAuthenticated: boolean;
@@ -13,7 +14,11 @@ interface HeaderProps {
 
 export function Header({ isAuthenticated }: HeaderProps) {
   const router = useRouter();
-  const { selectedProducts, setUser } = useStore();
+  const { selectedProducts, setUser, setIsUserAuthenticated, isUserAuthenticated } = useStore();
+
+  useEffect(() => {
+    setIsUserAuthenticated(isAuthenticated);
+  }, [isAuthenticated]);
   
   const shouldShowSelectedProductsQuantity = selectedProducts.length > 0 && isAuthenticated;
 
@@ -41,7 +46,7 @@ export function Header({ isAuthenticated }: HeaderProps) {
           <Link href="/profile">
             <span>Perfil</span>
           </Link>
-          {isAuthenticated ? (
+          {isUserAuthenticated ? (
             <button className="cursor-pointer" onClick={handleSignOut}>Sair</button>
           ): (
             <button className="cursor-pointer" onClick={navigateToSignInPage}>Entrar</button>
