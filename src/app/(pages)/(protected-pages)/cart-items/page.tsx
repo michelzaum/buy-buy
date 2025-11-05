@@ -44,7 +44,7 @@ export default function CartItems() {
   const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user } = useStore();
+  const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user, isUserAuthenticated } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
@@ -129,7 +129,7 @@ export default function CartItems() {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 px-4 w-full max-w-2xl">
-        <Header />
+        <Header isAuthenticated={isUserAuthenticated} />
         {cartItems.length > 0 && (
           <div className="w-full flex justify-end py-2">
             <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
