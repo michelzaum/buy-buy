@@ -43,9 +43,6 @@ export function Header({ isAuthenticated }: HeaderProps) {
           <Link href="/">
             <span>Início</span>
           </Link>
-          <Link href="/profile">
-            <span>Perfil</span>
-          </Link>
           {isUserAuthenticated ? (
             <button className="cursor-pointer" onClick={handleSignOut}>Sair</button>
           ): (
