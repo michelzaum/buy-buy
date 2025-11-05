@@ -1,19 +1,16 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
+import axios from "axios";
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -25,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useStore } from "@/store/store";
 
 export function NavUser({
   user,
@@ -35,7 +33,19 @@ export function NavUser({
     avatar: string;
   };
 }) {
+  const { setUser } = useStore();
   const { isMobile } = useSidebar();
+  const router = useRouter();
+
+  async function handleSignOut(): Promise<void> {
+    await axios.post('/api/auth/sign-out');
+    navigateToHomePage();
+    setUser(undefined);
+  }
+
+  function navigateToHomePage(): void {
+    router.replace('/');
+  }
 
   return (
     <SidebarMenu>
@@ -76,7 +86,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className='hover:cursor-pointer' onClick={handleSignOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>
