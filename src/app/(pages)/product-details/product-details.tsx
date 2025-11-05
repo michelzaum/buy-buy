@@ -44,7 +44,7 @@ export function ProductDetailsComponent({
 }: SuggestedProductProps & ProductProps) {
   const router = useRouter();
   const [productQuantity, setProductQuantity] = useState(1);
-  const { user, setSelectedProduct } = useStore();
+  const { user, setSelectedProduct, isUserAuthenticated } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
   const isMaxProductQuantityLimitReached = productQuantity === MAX_PRODUCT_QUANTITY_ALLOWED;
@@ -122,7 +122,7 @@ export function ProductDetailsComponent({
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full px-4">
-        <Header />
+        <Header isAuthenticated={isUserAuthenticated} />
       </div>
       <div className="w-full flex flex-col items-center gap-6 px-6 md:max-w-9/12">
         <Link
