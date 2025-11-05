@@ -34,6 +34,7 @@ type Store = {
   user: BasicUserInfo | undefined;
   productFilter: ProductFilter;
   filteredProducts: ListProducts[];
+  isUserAuthenticated: boolean;
 };
 
 type Actions = {
@@ -44,6 +45,7 @@ type Actions = {
   setUser: (user?: BasicUserInfo) => void;
   setProductFilter: (productFilter: Partial<ProductFilter>) => void;
   setFilteredProducts: (filteredProducts: ListProducts[]) => void;
+  setIsUserAuthenticated: (isUserAuthenticated: boolean) => void;
 };
 
 export const useStore = create<Store & Actions>()(
@@ -97,6 +99,10 @@ export const useStore = create<Store & Actions>()(
         filteredProducts: [],
         setFilteredProducts: (filteredProducts: ListProducts[]) => set(() => ({
           filteredProducts,
+        })),
+        isUserAuthenticated: false,
+        setIsUserAuthenticated: (isUserAuthenticated: boolean) => set(() => ({
+          isUserAuthenticated,
         })),
       })),
       {
