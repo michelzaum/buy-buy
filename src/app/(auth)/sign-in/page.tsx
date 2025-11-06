@@ -147,9 +147,6 @@ export default function SignIn() {
                 <FormItem>
                   <div className="flex items-center">
                     <FormLabel>Senha</FormLabel>
-                    <Link href='#' className="ml-auto inline-block text-sm underline">
-                      Esqueceu sua senha?
-                    </Link>
                   </div>
                   <FormControl>
                     <Input placeholder="********" type="password" {...field} />
@@ -171,9 +168,6 @@ export default function SignIn() {
                   <Loader className="animate-spin" />
                 </div>
                )}
-              </Button>
-              <Button type="button" variant="outline" className="w-full">
-                Login with Google
               </Button>
             </div>
           </form>
