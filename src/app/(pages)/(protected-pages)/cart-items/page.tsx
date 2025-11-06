@@ -102,6 +102,7 @@ export default function CartItems() {
   }
 
   async function onCheckout(): Promise<void> {
+    setIsLoadingCartItems(true);
     const productIds = selectedProducts.map((product) => product.productId);
     const productsToCheckout = await getProductById(productIds);
     
@@ -112,6 +113,7 @@ export default function CartItems() {
     }));
 
     await handleCheckout(formattedProductToCheckout);
+    setIsLoadingCartItems(false);
   }
 
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
@@ -136,7 +138,6 @@ export default function CartItems() {
           <div className="min-h-screen grid place-items-center p-4">
             <div className="flex flex-col gap-8 items-center">
               <Loader className="animate-spin" />
-              <span className="text-sm md:text-lg font-medium">Carregando informacoes do carrinho...</span>
             </div>
           </div>
         ) : (
