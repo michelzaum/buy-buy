@@ -91,7 +91,7 @@ export default function CartItems() {
     setIsDeleteAllItemsFromCartModalOpen(false);
     await deleteAllCartItems(user?.email || '');
 
-    toast.success('Produtos excluído do carrinho', {
+    toast.success('Produtos excluídos do carrinho', {
       style: {
         backgroundColor: 'red',
         color: "white",
