@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { toast } from "sonner";
-import { ArrowLeft, Minus, Plus } from "lucide-react";
+import { ArrowLeft, Loader, Minus, Plus } from "lucide-react";
 import { ProductList } from "@/components/product/product-list";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
@@ -44,6 +44,7 @@ export function ProductDetailsComponent({
 }: SuggestedProductProps & ProductProps) {
   const router = useRouter();
   const [productQuantity, setProductQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const { user, setSelectedProduct, isUserAuthenticated } = useStore();
 
   const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
@@ -89,6 +90,7 @@ export function ProductDetailsComponent({
       router.push('/sign-in');
       return;
     }
+    setIsLoading(true);
 
     await saveCartItems({
       productId: product.id,
@@ -117,6 +119,8 @@ export function ProductDetailsComponent({
         }
       }
     )
+
+    setIsLoading(false);
   }
 
   return (
@@ -174,9 +178,16 @@ export function ProductDetailsComponent({
                 <Button
                   size={"lg"}
                   onClick={addToCart}
-                  className="hover:cursor-pointer"
+                  className="hover:cursor-pointer min-w-48"
+                  disabled={isLoading}
                 >
-                  Adicionar ao carrinho
+                  {isLoading ? (
+                    <Loader className="animate-spin" />
+                  ) : (
+                    <span>
+                      Adicionar ao carrinho
+                    </span>
+                  )}
                 </Button>
               </div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronRight, Loader, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -40,10 +40,13 @@ export function NavMain({
 }) {
   const { setProductFilter, productFilter, setFilteredProducts } = useStore();
   const { state } = useSidebar();
+  const [isLoadingFilteredProducts, setIsLoadingFilteredProducts] = useState(false);
 
   async function handleApplyFilter() {
+    setIsLoadingFilteredProducts(true);
     const filteredProducts = await getFilteredProducts({ ...productFilter });
     setFilteredProducts(filteredProducts);
+    setIsLoadingFilteredProducts(false);
   }
 
   function handleSelectedCategory(category: string): void {
@@ -111,7 +114,19 @@ export function NavMain({
           </Collapsible>
         ))}
         {state === "expanded" && (
-          <Button className="hover:cursor-pointer mt-6" onClick={handleApplyFilter}>Aplicar</Button>
+          <Button
+            className="hover:cursor-pointer mt-6"
+            onClick={handleApplyFilter}
+            disabled={isLoadingFilteredProducts}
+          >
+            {isLoadingFilteredProducts ? (
+              <Loader className="animate-spin" />
+            ) : (
+              <span>
+                Aplicar
+              </span>
+            )}
+          </Button>
         )}
       </SidebarMenu>
     </SidebarGroup>
