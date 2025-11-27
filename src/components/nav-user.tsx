@@ -7,7 +7,6 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +22,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useStore } from "@/store/store";
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export function NavUser({
   user,
