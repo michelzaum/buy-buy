@@ -27,7 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/layout/header/header";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 import { handleCheckout } from "@/app/_actions/checkout";

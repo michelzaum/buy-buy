@@ -1,8 +1,8 @@
 'use client';
 
 import { ChangeEvent } from "react";
-import { Input } from "../ui/input";
 import { useStore } from '@/store/store';
+import { Input } from "@/components/ui/input";
 
 export function PriceFilter() {
   const { setProductFilter, productFilter } = useStore();

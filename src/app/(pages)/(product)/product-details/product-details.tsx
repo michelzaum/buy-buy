@@ -11,7 +11,7 @@ import { ProductList } from "@/app/(pages)/(product)/_components/product-list";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useStore } from "@/store/store";
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/layout/header/header";
 import { saveCartItems } from "@/app/_actions/save-cart-items";
 
 interface ProductProps {
