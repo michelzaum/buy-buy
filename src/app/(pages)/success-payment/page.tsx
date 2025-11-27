@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/store/store";
-import { deleteAllCartItems } from "../_actions/delete-all-cart-items";
+import { deleteAllCartItems } from "../../_actions/delete-all-cart-items";
 
 export default function SuccessPage() {
   const { removeAllProducts, user } = useStore();
