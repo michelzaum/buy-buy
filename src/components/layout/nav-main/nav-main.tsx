@@ -19,7 +19,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
+import { Button } from "../../ui/button";
 import { useStore } from "@/store/store";
 import { getFilteredProducts } from "@/app/_actions/get-filtered-products";
 

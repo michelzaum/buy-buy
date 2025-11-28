@@ -3,8 +3,8 @@
 import * as React from "react";
 import { DollarSign, Tag } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from "@/components/layout/nav-main/nav-main";
+import { NavUser } from "@/components/layout/nav-user/nav-user";
 import {
   Sidebar,
   SidebarContent,
