@@ -19,8 +19,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
+import { useSidebar } from '@/components/ui/sidebar/hooks/useSideBar';
 import { useStore } from "@/store/store";
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 
