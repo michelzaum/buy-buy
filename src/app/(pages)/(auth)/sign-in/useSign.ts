@@ -3,19 +3,14 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getProductsByUserEmail } from "@/app/_actions/get-product-by-user-email";
 import { saveCartItems } from "@/app/_actions/save-cart-items";
 import { useStore } from "@/store/store";
 
-const schema = z.object({
-  email: z.string().email('E-mail inválido'),
-  password: z.string().min(1, 'Informe a senha'),
-});
-
-type FormData = z.infer<typeof schema>;
+import { schema } from "./schema";
+import { FormData } from "./type";
 
 export function useSign() {
   const router = useRouter();
