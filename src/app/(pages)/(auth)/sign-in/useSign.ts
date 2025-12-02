@@ -10,7 +10,7 @@ import { saveCartItems } from "@/app/_actions/save-cart-items";
 import { useStore } from "@/store/store";
 
 import { schema } from "./schema";
-import { FormData, SelectedProduct } from "./type";
+import { FormData, SelectedProduct, UserProduct } from "./type";
 
 export function useSign() {
   const router = useRouter();
@@ -31,10 +31,7 @@ export function useSign() {
   async function saveCartItemsByNotAuthenticaedUser(
     selectedProducts: SelectedProduct[],
     userEmail: string,
-    userProducts?: {
-      productId: string;
-      quantity: number;
-    }[],
+    userProducts?: UserProduct[],
   ) {
     const userProductsIds = formatUserProducts(userProducts ?? []);
 
