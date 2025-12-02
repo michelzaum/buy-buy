@@ -10,7 +10,7 @@ import { saveCartItems } from "@/app/_actions/save-cart-items";
 import { useStore } from "@/store/store";
 
 import { schema } from "./schema";
-import { FormData, SelectedProduct, UserProduct } from "./type";
+import { FormData, SelectedProduct, UserProduct } from "./types";
 
 export function useSign() {
   const router = useRouter();
