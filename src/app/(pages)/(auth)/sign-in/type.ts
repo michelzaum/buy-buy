@@ -9,3 +9,8 @@ export type SelectedProduct = {
   quantity: number;
   wasAddedByAuthenticatedUser?: boolean;
 };
+
+export type UserProduct = {
+  productId: string;
+  quantity: number;
+};
