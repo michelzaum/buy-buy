@@ -10,7 +10,7 @@ import { saveCartItems } from "@/app/_actions/save-cart-items";
 import { useStore } from "@/store/store";
 
 import { schema } from "./schema";
-import { FormData } from "./type";
+import { FormData, SelectedProduct } from "./type";
 
 export function useSign() {
   const router = useRouter();
@@ -28,18 +28,14 @@ export function useSign() {
     return userProducts.map((product) => product.productId);
   }
 
-  async function saveCartItemsByNotAuthenticaedUser(selectedProducts: {
-    // TODO: create a type for these props
-    productId: string;
-    quantity: number;
-    wasAddedByAuthenticatedUser?: boolean;
-  }[],
-  userEmail: string,
-  userProducts?: {
-    productId: string;
-    quantity: number;
-  }[],
-) {
+  async function saveCartItemsByNotAuthenticaedUser(
+    selectedProducts: SelectedProduct[],
+    userEmail: string,
+    userProducts?: {
+      productId: string;
+      quantity: number;
+    }[],
+  ) {
     const userProductsIds = formatUserProducts(userProducts ?? []);
 
     for (let i = 0; selectedProducts.length > i; i++) {
