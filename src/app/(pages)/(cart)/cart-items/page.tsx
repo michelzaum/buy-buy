@@ -1,12 +1,8 @@
 'use client';
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Loader, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { useStore } from "@/store/store";
-import { getCartItems } from "@/app/_actions/get-cart-items";
 import { formatCurrency } from "@/lib/formatCurrency";
 import {
   Select,
@@ -27,102 +23,26 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/header/header";
-import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
-import { deleteCartItem } from "@/app/_actions/delete-cart-item";
-import { handleCheckout } from "@/app/_actions/checkout";
-import { getProductById } from "@/app/_actions/get-product-by-id";
-import { CardCartItem } from "./types";
 import { MAX_PRODUCT_QUANTITY_ALLOWED } from "./contants";
+import { useCartItems } from "./useCartItems";
 
 export default function CartItems() {
-  const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
-  const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
-  const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
-  const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
-  const [isLoadingCartItems, setIsLoadingCartItems] = useState(true);
-  const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user, isUserAuthenticated } = useStore();
-
-  useEffect(() => {
-    const cartItems = async () => {
-      const response = await getCartItems();
-
-      if (response && response.items) {
-        setCartItems(response.items)
-      }
-
-      setIsLoadingCartItems(false);
-    }
-
-    cartItems();
-  }, []);
-
-  function getTotalPrice(products: CardCartItem[]): number {
-    return products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  }
-
-  async function handleDeleteItemFromCart(productId: string): Promise<void> {
-    await deleteCartItem(productId);
-
-    const updatedList = cartItems.filter((item) => item.product.id !== productId);
-    setCartItems(updatedList);
-    removeProduct(productId);
-    setIsDeleteItemFromCartModalOpen(false);
-
-    toast.success('Produto excluído do carrinho', {
-      style: {
-        backgroundColor: 'red',
-        color: "white",
-        fontSize: '1rem',
-        fontWeight: 500,
-      },
-    });
-  }
-
-  async function handleDeleteAllItemsFromCart(): Promise<void> {
-    setCartItems([]);
-    removeAllProducts();
-    setIsDeleteAllItemsFromCartModalOpen(false);
-    await deleteAllCartItems(user?.email || '');
-
-    toast.success('Produtos excluídos do carrinho', {
-      style: {
-        backgroundColor: 'red',
-        color: "white",
-        fontSize: '1rem',
-        fontWeight: 500,
-      },
-    });
-  }
-
-  async function onCheckout(): Promise<void> {
-    setIsLoadingCartItems(true);
-    const productIds = selectedProducts.map((product) => product.productId);
-    const productsToCheckout = await getProductById(productIds);
-    
-    const formattedProductToCheckout = productsToCheckout.map((product, index) => ({
-      name: product.name,
-      price: product.price,
-      quantity: product.cartItems[0].quantity,
-    }));
-
-    await handleCheckout(formattedProductToCheckout);
-    setIsLoadingCartItems(false);
-  }
-
-  function handleUpdateProductQuantity(productId: string, quantity: number): void {
-    setCartItems((prevState) => {
-      return prevState.map((item) =>
-          item.product.id === productId ? {...item, quantity: quantity } : item,
-      );
-    });
-
-    updateProduct(productId, quantity);
-  }
-
-  function handleOpenDeleteItemFromCartModal(productId: string): void {
-    setSelectedItemToDeleteFromCart(productId);
-    setIsDeleteItemFromCartModalOpen(true);
-  }
+  const {
+    cartItems,
+    isLoadingCartItems,
+    isUserAuthenticated,
+    selectedItemToDeleteFromCart,
+    isDeleteItemFromCartModalOpen,
+    isDeleteAllItemsFromCartModalOpen,
+    getTotalPrice,
+    onCheckout,
+    setIsDeleteItemFromCartModalOpen,
+    handleDeleteItemFromCart,
+    handleDeleteAllItemsFromCart,
+    setIsDeleteAllItemsFromCartModalOpen,
+    handleOpenDeleteItemFromCartModal,
+    handleUpdateProductQuantity,
+  } = useCartItems();
 
   return (
     <div className="flex justify-center w-full">
