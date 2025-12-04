@@ -15,3 +15,8 @@ export type CartItemCardProps = {
   onDeleteItemFromCart: () => void;
   onUpdateProductQuantity: (newQuantityValue: number) => void;
 }
+
+export type CartItemsSummaryProps = {
+  totalPrice: number;
+  onCheckout: () => Promise<void>;
+}

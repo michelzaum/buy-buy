@@ -17,6 +17,7 @@ import { Loading } from "./components/loading";
 import { CartItemCard } from "./components/cart-item-card";
 import { DeleteAllCartItems } from "./components/delete-all-cart-items";
 import { EmptyCartItemsList } from "./components/empty-cart-items-list";
+import { CartItemsSummary } from "./components/cart-items-summary";
 
 export default function CartItems() {
   const {
@@ -58,20 +59,7 @@ export default function CartItems() {
               <EmptyCartItemsList />
             )}
             {cartItems.length > 0 && (
-              <>
-                <div className="flex items-center justify-between my-2">
-                  <span className="text-lg">Total</span>
-                  <strong className="text-lg">{formatCurrency(getTotalPrice(cartItems))}</strong>
-                </div>
-                <div className="w-full py-4 flex justify-end">
-                  <Button
-                    className="w-full py-8 sm:w-1/2 hover:cursor-pointer"
-                    onClick={onCheckout}
-                  >
-                    <span className="font-semibold text-lg">Continuar</span>
-                  </Button>
-                </div>
-              </>
+              <CartItemsSummary onCheckout={onCheckout} totalPrice={getTotalPrice(cartItems)} />
             )}
           </>
         )}
