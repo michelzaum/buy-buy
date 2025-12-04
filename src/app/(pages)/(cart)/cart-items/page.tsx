@@ -31,6 +31,8 @@ export default function CartItems() {
     handleDeleteItemFromCart,
     handleDeleteAllItemsFromCart,
     setIsDeleteAllItemsFromCartModalOpen,
+    handleOpenDeleteItemFromCartModal,
+    handleUpdateProductQuantity,
   } = useCartItems();
 
   return (
@@ -45,7 +47,11 @@ export default function CartItems() {
               <DeleteAllCartItems onDeleteAllItemsFromCart={() => setIsDeleteAllItemsFromCartModalOpen(true)} />
             )}
             {cartItems.length > 0 ? cartItems.map((cartItem) => (
-              <CartItemCard {...cartItem} />
+              <CartItemCard
+                cartItem={cartItem}
+                onDeleteItemFromCart={() => handleOpenDeleteItemFromCartModal(cartItem.product.id)}
+                onUpdateProductQuantity={(newQuantity) => handleUpdateProductQuantity(cartItem.product.id, newQuantity)}
+              />
             )) : (
               <div className="w-full flex flex-col items-center gap-6 py-6">
                 <strong className="text-2xl">O carrinho está vazio.</strong>

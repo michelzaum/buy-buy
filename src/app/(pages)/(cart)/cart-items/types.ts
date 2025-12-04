@@ -9,3 +9,9 @@ export type CardCartItem = {
 export type DeleteAllCartItemsProps = {
   onDeleteAllItemsFromCart: () => void;
 }
+
+export type CartItemCardProps = {
+  cartItem: Omit<CardCartItem, 'id'>;
+  onDeleteItemFromCart: () => void;
+  onUpdateProductQuantity: (newQuantityValue: number) => void;
+}
