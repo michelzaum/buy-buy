@@ -48,6 +48,7 @@ export default function CartItems() {
             )}
             {cartItems.length > 0 ? cartItems.map((cartItem) => (
               <CartItemCard
+                key={cartItem.id}
                 cartItem={cartItem}
                 onDeleteItemFromCart={() => handleOpenDeleteItemFromCartModal(cartItem.product.id)}
                 onUpdateProductQuantity={(newQuantity) => handleUpdateProductQuantity(cartItem.product.id, newQuantity)}
