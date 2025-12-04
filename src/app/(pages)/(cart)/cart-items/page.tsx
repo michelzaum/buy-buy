@@ -1,7 +1,5 @@
 'use client';
 
-import Link from "next/link";
-import { formatCurrency } from "@/lib/formatCurrency";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +16,7 @@ import { CartItemCard } from "./components/cart-item-card";
 import { DeleteAllCartItems } from "./components/delete-all-cart-items";
 import { EmptyCartItemsList } from "./components/empty-cart-items-list";
 import { CartItemsSummary } from "./components/cart-items-summary";
+import { DeleteCartItemModal } from "./components/delete-cart-item";
 
 export default function CartItems() {
   const {
@@ -25,11 +24,11 @@ export default function CartItems() {
     isLoadingCartItems,
     isUserAuthenticated,
     selectedItemToDeleteFromCart,
-    isDeleteItemFromCartModalOpen,
+    isDeleteCartItemModalOpen,
     isDeleteAllItemsFromCartModalOpen,
     getTotalPrice,
     onCheckout,
-    setIsDeleteItemFromCartModalOpen,
+    setIsDeleteCartItemModalOpen,
     handleDeleteItemFromCart,
     handleDeleteAllItemsFromCart,
     setIsDeleteAllItemsFromCartModalOpen,
@@ -63,32 +62,11 @@ export default function CartItems() {
             )}
           </>
         )}
-        <Dialog open={isDeleteItemFromCartModalOpen}>
-          <DialogContent className="[&>button]:hidden flex flex-col gap-6">
-            <DialogHeader className="flex flex-col gap-4">
-              <DialogTitle>Tem certeza?</DialogTitle>
-              <DialogDescription>
-                Quer mesmo excluir este item do carrinho? Você pode adicioná-lo novamente selecionando-o na lista de produtos.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter className="flex flex-row w-full mt-4">
-              <Button
-                className="flex-1 hover:cursor-pointer hover:bg-gray-200 transition-colors duration-200 ease-in-out"
-                variant='secondary'
-                onClick={() => setIsDeleteItemFromCartModalOpen(false)}
-              >
-                <span className="font-semibold">Cancelar</span>
-              </Button>
-              <Button
-                className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
-                variant='destructive'
-                onClick={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
-              >
-                <span className="font-semibold">Excluir</span>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <DeleteCartItemModal
+          isDeleteCartItemModalOpen={isDeleteCartItemModalOpen}
+          onCancel={() => setIsDeleteCartItemModalOpen(false)}
+          onDelete={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
+        />
         <Dialog open={isDeleteAllItemsFromCartModalOpen}>
           <DialogContent className="[&>button]:hidden flex flex-col gap-6">
             <DialogHeader className="flex flex-col gap-4">

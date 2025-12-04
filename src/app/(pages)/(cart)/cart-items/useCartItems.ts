@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { CardCartItem } from "./types";
+import { toast } from "sonner";
 import { useStore } from "@/store/store";
 import { getCartItems } from "@/app/_actions/get-cart-items";
 import { deleteCartItem } from "@/app/_actions/delete-cart-item";
-import { toast } from "sonner";
 import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 import { getProductById } from "@/app/_actions/get-product-by-id";
 import { handleCheckout } from "@/app/_actions/checkout";
+import { CardCartItem } from "./types";
 
 export function useCartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
-  const [isDeleteItemFromCartModalOpen, setIsDeleteItemFromCartModalOpen] = useState<boolean>(false);
+  const [isDeleteCartItemModalOpen, setIsDeleteCartItemModalOpen] = useState<boolean>(false);
   const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const [isLoadingCartItems, setIsLoadingCartItems] = useState(true);
@@ -40,7 +40,7 @@ export function useCartItems() {
     const updatedList = cartItems.filter((item) => item.product.id !== productId);
     setCartItems(updatedList);
     removeProduct(productId);
-    setIsDeleteItemFromCartModalOpen(false);
+    setIsDeleteCartItemModalOpen(false);
 
     toast.success('Produto excluído do carrinho', {
       style: {
@@ -86,7 +86,7 @@ export function useCartItems() {
   function handleUpdateProductQuantity(productId: string, quantity: number): void {
     setCartItems((prevState) => {
       return prevState.map((item) =>
-          item.product.id === productId ? {...item, quantity: quantity } : item,
+        item.product.id === productId ? {...item, quantity: quantity } : item,
       );
     });
 
@@ -95,12 +95,12 @@ export function useCartItems() {
 
   function handleOpenDeleteItemFromCartModal(productId: string): void {
     setSelectedItemToDeleteFromCart(productId);
-    setIsDeleteItemFromCartModalOpen(true);
+    setIsDeleteCartItemModalOpen(true);
   }
 
   return {
     cartItems,
-    isDeleteItemFromCartModalOpen,
+    isDeleteCartItemModalOpen,
     isDeleteAllItemsFromCartModalOpen,
     selectedItemToDeleteFromCart,
     isLoadingCartItems,
@@ -111,7 +111,7 @@ export function useCartItems() {
     handleUpdateProductQuantity,
     handleOpenDeleteItemFromCartModal,
     onCheckout,
-    setIsDeleteItemFromCartModalOpen,
+    setIsDeleteCartItemModalOpen,
     setIsDeleteAllItemsFromCartModalOpen,
   }
 }

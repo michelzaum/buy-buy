@@ -20,3 +20,9 @@ export type CartItemsSummaryProps = {
   totalPrice: number;
   onCheckout: () => Promise<void>;
 }
+
+export type DeleteCartItemProps = {
+  isDeleteCartItemModalOpen: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+}
