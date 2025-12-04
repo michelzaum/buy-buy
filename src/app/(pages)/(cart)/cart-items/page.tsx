@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Loader, Trash2 } from "lucide-react";
-import { Product } from "@prisma/client";
 import { toast } from "sonner";
 import { useStore } from "@/store/store";
 import { getCartItems } from "@/app/_actions/get-cart-items";
@@ -32,12 +31,7 @@ import { deleteAllCartItems } from "@/app/_actions/delete-all-cart-items";
 import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 import { handleCheckout } from "@/app/_actions/checkout";
 import { getProductById } from "@/app/_actions/get-product-by-id";
-
-interface CardCartItem {
-  id: string;
-  product: Product
-  quantity: number;
-}
+import { CardCartItem } from "./types";
 
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
