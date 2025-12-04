@@ -5,3 +5,7 @@ export type CardCartItem = {
   product: Product
   quantity: number;
 }
+
+export type DeleteAllCartItemsProps = {
+  onDeleteAllItemsFromCart: () => void;
+}

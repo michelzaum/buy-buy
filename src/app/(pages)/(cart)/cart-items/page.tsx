@@ -15,6 +15,7 @@ import { Header } from "@/components/layout/header/header";
 import { useCartItems } from "./useCartItems";
 import { Loading } from "./components/loading";
 import { CartItemCard } from "./components/cart-item-card";
+import { DeleteAllCartItems } from "./components/delete-all-cart-items";
 
 export default function CartItems() {
   const {
@@ -41,13 +42,7 @@ export default function CartItems() {
           <>
             <Header isAuthenticated={isUserAuthenticated} />
             {cartItems.length > 0 && (
-              <div className="w-full flex justify-end py-2">
-                <button className="cursor-pointer" onClick={() => setIsDeleteAllItemsFromCartModalOpen(true)}>
-                  <span className="text-sm text-red-500 font-semibold md:text-base">
-                    Esvaziar carrinho
-                  </span>
-                </button>
-              </div>
+              <DeleteAllCartItems onDeleteAllItemsFromCart={() => setIsDeleteAllItemsFromCartModalOpen(true)} />
             )}
             {cartItems.length > 0 ? cartItems.map((cartItem) => (
               <CartItemCard {...cartItem} />
