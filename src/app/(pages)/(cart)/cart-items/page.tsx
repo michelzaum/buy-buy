@@ -32,6 +32,7 @@ import { deleteCartItem } from "@/app/_actions/delete-cart-item";
 import { handleCheckout } from "@/app/_actions/checkout";
 import { getProductById } from "@/app/_actions/get-product-by-id";
 import { CardCartItem } from "./types";
+import { MAX_PRODUCT_QUANTITY_ALLOWED } from "./contants";
 
 export default function CartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
@@ -40,8 +41,6 @@ export default function CartItems() {
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const [isLoadingCartItems, setIsLoadingCartItems] = useState(true);
   const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user, isUserAuthenticated } = useStore();
-
-  const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
 
   useEffect(() => {
     const cartItems = async () => {
