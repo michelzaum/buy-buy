@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/header/header";
 import { MAX_PRODUCT_QUANTITY_ALLOWED } from "./contants";
 import { useCartItems } from "./useCartItems";
+import { Loading } from "./components/loading";
 
 export default function CartItems() {
   const {
@@ -48,11 +49,7 @@ export default function CartItems() {
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-8 px-4 w-full max-w-2xl">
         {isLoadingCartItems ? (
-          <div className="min-h-screen grid place-items-center p-4">
-            <div className="flex flex-col gap-8 items-center">
-              <Loader className="animate-spin" />
-            </div>
-          </div>
+          <Loading />
         ) : (
           <>
             <Header isAuthenticated={isUserAuthenticated} />
