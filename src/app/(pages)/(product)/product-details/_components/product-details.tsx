@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ProductList } from "@/app/(pages)/(product)/product-list/_components/product-list";
 import { Header } from "@/components/layout/header/header";
 import { ProductItem } from "./product-item";
 import { useProduct } from "../../useProduct";
 import { ProductProps, SuggestedProductProps } from "../../types";
+import { SuggestedProducts } from "./suggested-products";
 
 export function ProductDetailsComponent({
   suggestedProducts,
@@ -28,12 +28,7 @@ export function ProductDetailsComponent({
           <span>Voltar</span>
         </Link>
         <ProductItem product={product} />
-        <div className="w-full my-4">
-          <span className="flex py-6 font-medium">
-            Outros produtos da categoria {product.category.name}
-          </span>
-          <ProductList isSuggestedProduct products={suggestedProducts} />
-        </div>
+        <SuggestedProducts product={product} suggestedProducts={suggestedProducts}  />
       </div>
     </div>
   );
