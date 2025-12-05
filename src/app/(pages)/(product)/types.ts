@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, Category, Product } from "@prisma/client";
 
 export type ProductItemProps = {
   product: Prisma.ProductGetPayload<{
@@ -10,5 +10,14 @@ export type ProductItemProps = {
       };
     };
   }>;
+  isSuggestedProduct?: boolean;
+}
+
+interface ListProducts extends Product {
+  category: Pick<Category, 'name'>;
+}
+
+export type ProductListProps = {
+  products: ListProducts[];
   isSuggestedProduct?: boolean;
 }
