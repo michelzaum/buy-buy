@@ -2,7 +2,7 @@ import { Product } from "@prisma/client";
 
 export type CardCartItem = {
   id: string;
-  product: Product
+  product: Product;
   quantity: number;
 }
 
