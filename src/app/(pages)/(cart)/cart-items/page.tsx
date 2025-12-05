@@ -16,7 +16,7 @@ import { CartItemCard } from "./components/cart-item-card";
 import { DeleteAllCartItems } from "./components/delete-all-cart-items";
 import { EmptyCartItemsList } from "./components/empty-cart-items-list";
 import { CartItemsSummary } from "./components/cart-items-summary";
-import { DeleteCartItemModal } from "./components/delete-cart-item";
+import { DeleteCartItemModal } from "./components/delete-cart-item-modal";
 
 export default function CartItems() {
   const {
