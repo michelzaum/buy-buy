@@ -11,7 +11,7 @@ import { CardCartItem } from "./types";
 export function useCartItems() {
   const [cartItems, setCartItems] = useState<CardCartItem[]>([]);
   const [isDeleteCartItemModalOpen, setIsDeleteCartItemModalOpen] = useState<boolean>(false);
-  const [isDeleteAllItemsFromCartModalOpen, setIsDeleteAllItemsFromCartModalOpen] = useState<boolean>(false);
+  const [isDeleteAllCartItemsModalOpen, setIsDeleteAllCartItemsModalOpen] = useState<boolean>(false);
   const [selectedItemToDeleteFromCart, setSelectedItemToDeleteFromCart] = useState<string>('');
   const [isLoadingCartItems, setIsLoadingCartItems] = useState(true);
   const { selectedProducts, updateProduct, removeProduct, removeAllProducts, user, isUserAuthenticated } = useStore();
@@ -55,7 +55,7 @@ export function useCartItems() {
   async function handleDeleteAllItemsFromCart(): Promise<void> {
     setCartItems([]);
     removeAllProducts();
-    setIsDeleteAllItemsFromCartModalOpen(false);
+    setIsDeleteAllCartItemsModalOpen(false);
     await deleteAllCartItems(user?.email || '');
 
     toast.success('Produtos excluídos do carrinho', {
@@ -101,7 +101,7 @@ export function useCartItems() {
   return {
     cartItems,
     isDeleteCartItemModalOpen,
-    isDeleteAllItemsFromCartModalOpen,
+    isDeleteAllCartItemsModalOpen,
     selectedItemToDeleteFromCart,
     isLoadingCartItems,
     isUserAuthenticated,
@@ -112,6 +112,6 @@ export function useCartItems() {
     handleOpenDeleteItemFromCartModal,
     onCheckout,
     setIsDeleteCartItemModalOpen,
-    setIsDeleteAllItemsFromCartModalOpen,
+    setIsDeleteAllCartItemsModalOpen,
   }
 }

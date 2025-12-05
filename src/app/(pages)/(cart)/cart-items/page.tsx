@@ -17,13 +17,13 @@ export default function CartItems() {
     isUserAuthenticated,
     selectedItemToDeleteFromCart,
     isDeleteCartItemModalOpen,
-    isDeleteAllItemsFromCartModalOpen,
+    isDeleteAllCartItemsModalOpen,
     getTotalPrice,
     onCheckout,
     setIsDeleteCartItemModalOpen,
+    setIsDeleteAllCartItemsModalOpen,
     handleDeleteItemFromCart,
     handleDeleteAllItemsFromCart,
-    setIsDeleteAllItemsFromCartModalOpen,
     handleOpenDeleteItemFromCartModal,
     handleUpdateProductQuantity,
   } = useCartItems();
@@ -37,7 +37,7 @@ export default function CartItems() {
           <>
             <Header isAuthenticated={isUserAuthenticated} />
             {cartItems.length > 0 && (
-              <DeleteAllCartItems onDeleteAllItemsFromCart={() => setIsDeleteAllItemsFromCartModalOpen(true)} />
+              <DeleteAllCartItems onDeleteAllItemsFromCart={() => setIsDeleteAllCartItemsModalOpen(true)} />
             )}
             {cartItems.length > 0 ? cartItems.map((cartItem) => (
               <CartItemCard
@@ -60,8 +60,8 @@ export default function CartItems() {
           onDelete={() => handleDeleteItemFromCart(selectedItemToDeleteFromCart)}
         />
         <DeleteAllCartItemsModal
-          isDeleteAllCartItemsModalOpen={isDeleteAllItemsFromCartModalOpen}
-          onCancel={() => setIsDeleteAllItemsFromCartModalOpen(false)}
+          isDeleteAllCartItemsModalOpen={isDeleteAllCartItemsModalOpen}
+          onCancel={() => setIsDeleteAllCartItemsModalOpen(false)}
           onDelete={handleDeleteAllItemsFromCart}
         />
       </div>
