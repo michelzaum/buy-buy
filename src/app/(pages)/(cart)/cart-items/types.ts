@@ -26,3 +26,9 @@ export type DeleteCartItemProps = {
   onCancel: () => void;
   onDelete: () => void;
 }
+
+export type DeleteAllCartItemsModalProps = {
+  isDeleteAllCartItemsModalOpen: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+}
