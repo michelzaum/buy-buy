@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ProductDetailsComponent } from "../product-details";
+import { ProductDetailsComponent } from "../_components/product-details";
 
 interface ProductDetailsProps {
   params: Promise<{

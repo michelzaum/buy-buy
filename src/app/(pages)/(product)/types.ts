@@ -21,3 +21,27 @@ export type ProductListProps = {
   products: ListProducts[];
   isSuggestedProduct?: boolean;
 }
+
+export type ProductProps = {
+  product: Prisma.ProductGetPayload<{
+    include: {
+      category: {
+        select: {
+          name: true;
+        };
+      };
+    };
+  }>;
+}
+
+export type SuggestedProductProps = {
+  suggestedProducts: Prisma.ProductGetPayload<{
+    include: {
+      category: {
+        select: {
+          name: true;
+        };
+      };
+    };
+  }>[];
+}

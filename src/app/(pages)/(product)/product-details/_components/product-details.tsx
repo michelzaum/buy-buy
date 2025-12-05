@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Prisma } from "@prisma/client";
 import { toast } from "sonner";
 import { ArrowLeft, Loader, Minus, Plus } from "lucide-react";
 import { ProductList } from "@/app/(pages)/(product)/product-list/_components/product-list";
@@ -13,30 +12,7 @@ import { formatCurrency } from "@/lib/formatCurrency";
 import { useStore } from "@/store/store";
 import { Header } from "@/components/layout/header/header";
 import { saveCartItems } from "@/app/_actions/save-cart-items";
-
-interface ProductProps {
-  product: Prisma.ProductGetPayload<{
-    include: {
-      category: {
-        select: {
-          name: true;
-        };
-      };
-    };
-  }>;
-}
-
-interface SuggestedProductProps {
-  suggestedProducts: Prisma.ProductGetPayload<{
-    include: {
-      category: {
-        select: {
-          name: true;
-        };
-      };
-    };
-  }>[];
-}
+import { ProductProps, SuggestedProductProps } from "../../types";
 
 export function ProductDetailsComponent({
   suggestedProducts,
