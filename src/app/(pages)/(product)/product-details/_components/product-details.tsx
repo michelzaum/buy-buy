@@ -13,6 +13,7 @@ import { useStore } from "@/store/store";
 import { Header } from "@/components/layout/header/header";
 import { saveCartItems } from "@/app/_actions/save-cart-items";
 import { ProductProps, SuggestedProductProps } from "../../types";
+import { MAX_PRODUCT_QUANTITY_ALLOWED } from "../../contants";
 
 export function ProductDetailsComponent({
   suggestedProducts,
@@ -23,7 +24,6 @@ export function ProductDetailsComponent({
   const [isLoading, setIsLoading] = useState(false);
   const { user, setSelectedProduct, isUserAuthenticated } = useStore();
 
-  const MAX_PRODUCT_QUANTITY_ALLOWED = 20;
   const isMaxProductQuantityLimitReached = productQuantity === MAX_PRODUCT_QUANTITY_ALLOWED;
 
   function updateProductQuantityManually(quantity: number): void {
