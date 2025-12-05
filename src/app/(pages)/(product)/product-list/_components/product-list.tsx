@@ -6,7 +6,7 @@ import { useStore } from "@/store/store";
 import { ProductItem } from "./product-item";
 import { EmptyProductList } from "./empty-product-list";
 import { NoProductFound } from "./no-product-found";
-import { ProductListProps } from "../types";
+import { ProductListProps } from "../../types";
 
 export function ProductList({ products, isSuggestedProduct }: ProductListProps) {
   const { setFilteredProducts, filteredProducts } = useStore();

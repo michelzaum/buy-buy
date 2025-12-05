@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { toast } from "sonner";
 import { ArrowLeft, Loader, Minus, Plus } from "lucide-react";
-import { ProductList } from "@/app/(pages)/(product)/_components/product-list";
+import { ProductList } from "@/app/(pages)/(product)/product-list/_components/product-list";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useStore } from "@/store/store";

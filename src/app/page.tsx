@@ -1,7 +1,7 @@
 import { ChevronLeft } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/sidebar/app-sidebar";
-import { ProductList } from "@/app/(pages)/(product)/_components/product-list";
+import { ProductList } from "@/app/(pages)/(product)/product-list/_components/product-list";
 import { db } from "@/lib/db";
 import { isAuthenticated } from "@/lib/auth";
 import { Header } from "@/components/layout/header/header";

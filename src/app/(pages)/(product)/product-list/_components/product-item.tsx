@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { ProductItemProps } from "../types";
+import { ProductItemProps } from "../../types";
 
 export function ProductItem({ product, isSuggestedProduct }: ProductItemProps) {
   const {
