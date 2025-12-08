@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
         },
         quantity: item.quantity,
       })),
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success-payment`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/canceled-payment`,
     });
 
     return NextResponse.json({ url: session.url });
