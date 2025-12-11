@@ -1,0 +1,7 @@
+import { z } from "zod";
+
+export const schema = z.object({
+  name: z.string().min(1, 'Informe um nome'),
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Informe a senha'),
+});
