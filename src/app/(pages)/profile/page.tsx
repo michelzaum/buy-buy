@@ -14,7 +14,7 @@ const schema = z.object({
   name: z.string().min(1, { message: 'Informe um nome' }),
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z.string().min(1, { message: 'Informe a senha' }).max(8),
-  confirmPassword: z.string().min(1).max(8),
+  confirmPassword: z.string().min(1, { message: 'Confirme a senha' }).max(8),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -30,6 +30,10 @@ export default function Profile() {
     },
   });
   const [profileImagePreview, setProfileImagePreview] = useState<string | undefined>('');
+
+  const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
+    console.log(formData);
+  });
 
   function handleProfileImagePreview(event: ChangeEvent<HTMLInputElement>): void {
     const file = event.target.files?.[0];
@@ -69,7 +73,7 @@ export default function Profile() {
 
         <div className='flex justify-center p-4'>
           <Form {...form}>
-            <form className='w-full max-w-xl flex flex-col gap-8 pt-6'>
+            <form className='w-full max-w-xl flex flex-col gap-8 pt-6' onSubmit={handleSubmit}>
               <FormField
                 control={form.control}
                 name='name'
