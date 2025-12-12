@@ -11,9 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 
 const schema = z.object({
-  name: z.string().min(1),
-  email: z.string().email().min(1),
-  password: z.string().min(1).max(8),
+  name: z.string().min(1, { message: 'Informe um nome' }),
+  email: z.string().email({ message: 'E-mail inválido' }),
+  password: z.string().min(1, { message: 'Informe a senha' }).max(8),
   confirmPassword: z.string().min(1).max(8),
 });
 
