@@ -1,6 +1,8 @@
 'use client';
 
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, Loader } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -8,7 +10,6 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 import { useProfile } from './useProfile';
-import { Loader } from "lucide-react";
 
 export default function Profile() {
   const {
@@ -34,6 +35,12 @@ export default function Profile() {
       ): (
         <div className="flex justify-center h-dvh">
           <div className='w-full p-4'>
+            <div className="sm:px-10 py-6">
+              <Link href='/' className="flex items-center gap-2">
+                <ArrowLeft />
+                <span>Voltar</span>
+              </Link>
+            </div>
             <div className="flex flex-col items-center gap-6">
               <Image
                 width={200}
