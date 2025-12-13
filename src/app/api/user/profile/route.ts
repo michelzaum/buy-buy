@@ -25,7 +25,11 @@ export async function GET(request: NextRequest) {
   
   const user = await db.user.findUnique({
     where: { id: userId as string },
+    select: { name: true, email: true },
   });
 
-  return NextResponse.json({ body: user });
+  return NextResponse.json(
+    { user },
+    { status: 200 },
+  );
 }
