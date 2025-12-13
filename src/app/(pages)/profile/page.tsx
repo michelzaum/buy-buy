@@ -3,16 +3,15 @@
 import { ChangeEvent, useState } from 'react';
 import Image from "next/image";
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { schema } from './schema';
 
-type FormData = z.infer<typeof schema>;
+import { schema } from './schema';
+import { FormData } from './types';
 
 export default function Profile() {
   const form = useForm<FormData>({
