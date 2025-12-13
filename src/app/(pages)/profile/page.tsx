@@ -10,13 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-
-const schema = z.object({
-  name: z.string().min(1, { message: 'Informe um nome' }),
-  email: z.string().email({ message: 'E-mail inválido' }),
-  password: z.string().min(1, { message: 'Informe a senha' }).max(8),
-  confirmPassword: z.string().min(1, { message: 'Confirme a senha' }).max(8),
-});
+import { schema } from './schema';
 
 type FormData = z.infer<typeof schema>;
 
