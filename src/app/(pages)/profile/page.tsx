@@ -1,51 +1,25 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
 import Image from "next/image";
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
-import { schema } from './schema';
-import { FormData } from './types';
+import { useProfile } from './useProfile';
 
 export default function Profile() {
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
-  });
-  const [profileImagePreview, setProfileImagePreview] = useState<string | undefined>('');
-  const [isRemoveProfileImageModalOpen, setIsRemoveProfileImageModalOpen] = useState<boolean>(false);
-
-  const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
-    console.log(formData);
-  });
-
-  function handleProfileImagePreview(event: ChangeEvent<HTMLInputElement>): void {
-    const file = event.target.files?.[0];
-    setProfileImagePreview((prevState) =>
-      file ? URL.createObjectURL(file) : prevState,
-    );
-  }
-
-  function handleSelectNewProfileImage(): void {
-    document.getElementById('#ProfileImage')?.click();
-  }
-
-  function handleRemoveProfileImage() {}
-
-  function toggleRemoveProfileImageModalOpen(isOpen: boolean) {
-    setIsRemoveProfileImageModalOpen(isOpen);
-  }
+  const {
+    form,
+    profileImagePreview,
+    isRemoveProfileImageModalOpen,
+    handleSubmit,
+    handleProfileImagePreview,
+    handleRemoveProfileImage,
+    handleSelectNewProfileImage,
+    toggleRemoveProfileImageModalOpen,
+  } = useProfile();
 
   return (
     <div className="flex justify-center h-dvh">
