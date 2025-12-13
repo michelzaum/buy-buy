@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Informe um nome' }),
@@ -30,6 +31,7 @@ export default function Profile() {
     },
   });
   const [profileImagePreview, setProfileImagePreview] = useState<string | undefined>('');
+  const [isRemoveProfileImageModalOpen, setIsRemoveProfileImageModalOpen] = useState<boolean>(false);
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
     console.log(formData);
@@ -44,6 +46,12 @@ export default function Profile() {
 
   function handleSelectNewProfileImage(): void {
     document.getElementById('#ProfileImage')?.click();
+  }
+
+  function handleRemoveProfileImage() {}
+
+  function toggleRemoveProfileImageModalOpen(isOpen: boolean) {
+    setIsRemoveProfileImageModalOpen(isOpen);
   }
 
   return (
@@ -67,7 +75,9 @@ export default function Profile() {
               />
               <Button variant='secondary' onClick={handleSelectNewProfileImage}>Editar foto</Button>
             </div>
-            <Button variant='destructive'>Remover foto</Button>
+            <Button variant='destructive' onClick={() => toggleRemoveProfileImageModalOpen(true)}>
+              Remover foto
+            </Button>
           </div>
         </div>
 
@@ -135,6 +145,33 @@ export default function Profile() {
             </form>
           </Form>
         </div>
+
+        <Dialog open={isRemoveProfileImageModalOpen}>
+          <DialogContent className="[&>button]:hidden flex flex-col gap-6">
+            <DialogHeader className="flex flex-col gap-4">
+              <DialogTitle>Tem certeza?</DialogTitle>
+              <DialogDescription>
+                Quer mesmo remover a foto de perfil?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex flex-row w-full mt-4">
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                variant='secondary'
+                onClick={() => toggleRemoveProfileImageModalOpen(false)}
+              >
+                <span className="font-semibold">Cancelar</span>
+              </Button>
+              <Button
+                className="flex-1 hover:cursor-pointer hover:bg-red-500 transition-colors duration-200 ease-in-out"
+                variant='destructive'
+                onClick={handleRemoveProfileImage}
+              >
+                <span className="font-semibold">Remover</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
