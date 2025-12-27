@@ -36,8 +36,13 @@ export function useProfile() {
     getLoggedUserInformation();
   }, []);
 
-  const handleSubmit = form.handleSubmit(async (formData): Promise<void> => {
-    console.log(formData);
+  const handleSubmit = form.handleSubmit(async (formData): Promise<any> => {
+    const response = await axios.put('/api/user/profile/123', {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
+    return response;
   });
   
   function handleProfileImagePreview(event: ChangeEvent<HTMLInputElement>): void {

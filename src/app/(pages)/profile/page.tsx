@@ -123,7 +123,7 @@ export default function Profile() {
                       </FormItem>
                     )}
                   />
-                  <Button className='h-12'>
+                  <Button className='h-12' type="submit">
                     Salvar
                   </Button>
                 </form>
