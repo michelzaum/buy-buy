@@ -5,4 +5,12 @@ export const schema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z.string().optional(),
   confirmPassword: z.string().optional(),
-});
+}).refine(
+  (values) => {
+    return values.password === values.confirmPassword;
+  },
+  {
+    message: 'The passwords do not match',
+    path: ['confirmPassword'],
+  }
+);
