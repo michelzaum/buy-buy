@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { verify } from "jsonwebtoken";
+
 import { db } from "@/lib/db";
+import { env } from "@/app/config/env";
 
 interface UpdateUserProfileParams {
   params: Promise<{ id: string }>;
@@ -7,6 +11,7 @@ interface UpdateUserProfileParams {
 
 export async function PUT(request: NextRequest, { params }: UpdateUserProfileParams) {
   const { id } = await params;
+  const accessToken = (await cookies()).get('accessToken')?.value;
 
   if (!id) {
     return NextResponse.json(
@@ -15,17 +20,33 @@ export async function PUT(request: NextRequest, { params }: UpdateUserProfilePar
     );
   }
 
-  const userId = await db.user.findUnique({
+  if (!accessToken) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 },
+    );
+  }
+
+  const userToUpdate = await db.user.findUnique({
     where: { id },
     select: {
       id: true,
     },
   });
 
-  if (!userId) {
+  if (!userToUpdate) {
     return NextResponse.json(
       { error: 'User not found' },
       { status: 400 },
+    );
+  }
+
+  const { sub: authenticatedUserId } = verify(accessToken, env.jwtSecret);
+
+  if (authenticatedUserId !== userToUpdate.id) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 },
     );
   }
 
@@ -36,7 +57,7 @@ export async function PUT(request: NextRequest, { params }: UpdateUserProfilePar
     data: {
       email: body.email,
       name: body.name,
-      password: body.password,
+      password: body.password && body.password,
     },
   });
 
