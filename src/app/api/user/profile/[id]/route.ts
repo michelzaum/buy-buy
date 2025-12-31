@@ -52,7 +52,7 @@ export async function PUT(request: NextRequest, { params }: UpdateUserProfilePar
 
   const body = await request.json();
   
-  const updatedUser = await db.user.update({
+  await db.user.update({
     where: { id },
     data: {
       email: body.email,
@@ -61,8 +61,5 @@ export async function PUT(request: NextRequest, { params }: UpdateUserProfilePar
     },
   });
 
-  return NextResponse.json(
-    { updatedUser },
-    { status: 200 },
-  );
+  return NextResponse.json({ status: 204 });
 }
