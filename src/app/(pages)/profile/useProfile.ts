@@ -8,6 +8,7 @@ import { schema } from "./schema";
 import { FormData } from "./types";
 
 type User = {
+  id: string;
   name: string;
   email: string;
 };
@@ -19,6 +20,7 @@ type UserProfileInformationResponse = {
 export function useProfile() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profileImagePreview, setProfileImagePreview] = useState<string | undefined>('');
+  const [loggedUserInfo, setLoggedUserInfo] = useState<User>({} as User);
   const [isRemoveProfileImageModalOpen, setIsRemoveProfileImageModalOpen] = useState<boolean>(false);
   const [isSavingData, setIsSavingData] = useState<boolean>(false);
   const form = useForm<FormData>({ resolver: zodResolver(schema) });
@@ -32,6 +34,7 @@ export function useProfile() {
         email: user.email,
       });
 
+      setLoggedUserInfo(user);
       setIsLoading(false);
     }
 
@@ -46,7 +49,7 @@ export function useProfile() {
         hashedPassword = await hash(formData.password, 12);
       }
 
-      const response = await axios.put('/api/user/profile/83142392-35de-4f2e-9517-43d7a41349a4', {
+      const response = await axios.put(`/api/user/profile/${loggedUserInfo.id}`, {
         name: formData.name,
         email: formData.email,
         password: hashedPassword,
