@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { hash } from "bcryptjs";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { schema } from "./schema";
@@ -55,8 +56,25 @@ export function useProfile() {
         password: hashedPassword,
       });
 
+      toast.success('Informações atualizadas!', {
+        style: {
+          backgroundColor: 'green',
+          color: "white",
+          fontSize: '1rem',
+          fontWeight: 500,
+        }
+      });
+
       return response;
     } catch (error) {
+      toast.error('Erro ao salvar informações', {
+        style: {
+          backgroundColor: 'red',
+          color: "white",
+          fontSize: '1rem',
+          fontWeight: 500,
+        },
+      });
       console.error(error);
     } finally {
       setIsSavingData(false);
