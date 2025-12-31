@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { hash } from "bcryptjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { schema } from "./schema";
@@ -37,11 +38,17 @@ export function useProfile() {
   }, []);
 
   const handleSubmit = form.handleSubmit(async (formData): Promise<any> => {
-    const response = await axios.put('/api/user/profile/9fb452c7-b807-4842-a027-0d025473b023', {
+    let hashedPassword;
+    if (formData.password) {
+      hashedPassword = await hash(formData.password, 12);
+    }
+
+    const response = await axios.put('/api/user/profile/83142392-35de-4f2e-9517-43d7a41349a4', {
       name: formData.name,
       email: formData.email,
-      password: formData.password,
+      password: hashedPassword,
     });
+
     return response;
   });
   
