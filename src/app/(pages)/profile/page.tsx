@@ -17,6 +17,7 @@ export default function Profile() {
     profileImagePreview,
     isLoading,
     isRemoveProfileImageModalOpen,
+    isSavingData,
     handleSubmit,
     handleProfileImagePreview,
     handleRemoveProfileImage,
@@ -123,8 +124,18 @@ export default function Profile() {
                       </FormItem>
                     )}
                   />
-                  <Button className='h-12' type="submit">
-                    Salvar
+                  <Button
+                    className='h-12 hover:cursor-pointer'
+                    type="submit"
+                    disabled={isSavingData}
+                  >
+                    {!isSavingData && 'Salvar'}
+                    {isSavingData && (
+                      <div className="flex items-center gap-2">
+                        <span>Salvando...</span>
+                        <Loader className="animate-spin" />
+                      </div>
+                    )}
                   </Button>
                 </form>
               </Form>
